@@ -69,7 +69,7 @@ EnterMapAnim::
 	ld de, FlyAnimationEnterScreenCoords_Pikachu2
 	call DoFlyAnimation
 	ld hl, wFlyAnimCounter
-	ld a, 5
+	ld a, 6
 	ld [hli], a ; wFlyAnimCounter
 	ld [hl], $8 ; wFlyAnimBirdSpriteImageIndex (facing right)
 	ld de, FlyAnimationEnterScreenCoords_Pikachu3
@@ -143,6 +143,7 @@ FlyAnimationEnterScreenCoords_Pikachu3: ; new
 	db $36, $3A
 	db $38, $3C
 	db $3A, $3E
+	db $3C, $40
 ;	db $3C, $40 ; landing point
 
 
@@ -239,7 +240,7 @@ _LeaveMapAnim::
 	call DoFlyAnimation
 
 	ld hl, wFlyAnimCounter
-	ld a, 16
+	ld a, 18
 	ld [hli], a ; wFlyAnimCounter
 	ld [hl], $c ; wFlyAnimBirdSpriteImageIndex (facing right)
 	ld de, FlyAnimationScreenCoords_Pikachu3
@@ -383,27 +384,28 @@ FlyAnimationScreenCoords_Pikachu2: ; new
 	db $0E, $26
 	db $0D, $24
 	db $0C, $22
-	db $0B, $21
+	db $0B, $20
 
 FlyAnimationScreenCoords_Pikachu3: ; new
 ; y, x pairs
-;	db $0B, $21 ; starting point
-	db $0B, $22
-	db $16, $33
-	db $15, $34
-	db $13, $35
-	db $11, $36
-	db $0F, $37
-	db $0D, $38
-	db $0B, $39
-	db $09, $3A
-	db $07, $3B
-	db $06, $3C
-	db $04, $3D
-	db $02, $3E
+;	db $0B, $20 ; starting point
+	db $0B, $21
+	db $0C, $23
+	db $0D, $25
+	db $0E, $27
+	db $0F, $29
+	db $11, $2B
+	db $13, $2D
+	db $11, $2F
+	db $0F, $31
+	db $0D, $33
+	db $0B, $35
+	db $09, $37
+	db $07, $39
+	db $05, $3B
+	db $03, $3D
 	db $01, $3F
 	db $00, $40
-
 	db $F0, $00 ; ? what's this for?
 
 LeaveMapThroughHoleAnim:
