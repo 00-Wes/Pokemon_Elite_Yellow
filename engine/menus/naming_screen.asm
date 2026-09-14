@@ -248,14 +248,10 @@ DisplayNamingScreen:
 	ld a, SFX_PRESS_AB
 	call PlaySound
 	ret
-.pressedB
-	ld a, [wNamingScreenNameLength]
-	and a
-	ret z
-	call CalcStringLength
-	dec hl
-	ld [hl], "@"
-	ret
+.pressedB ; cancel nicknaming and close the naming screen
+	ld a, "@"
+	ld [wStringBuffer], a
+	jp .pressedStart
 .pressedRight
 	ld a, [wCurrentMenuItem]
 	cp $6
