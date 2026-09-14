@@ -41,6 +41,11 @@ IF DEF(_DEBUG)
 	ld hl, wPartyMon4Moves + 2
 	ld [hl], a
 
+    ; Pikachu gets Surf.
+    ld a, SURF
+    ld hl, wPartyMon4Moves + 3
+    ld [hl], a
+	
 	; Snorlax gets four HM moves.
 	ld hl, wPartyMon1Moves
 	ld a, FLY
