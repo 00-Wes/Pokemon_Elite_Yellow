@@ -72,7 +72,7 @@ StartMenu_Pokemon::
 	ld b, a
 	ld a, [wCurrentMenuItem] ; menu selection
 	cp b
-	jp z, .exitMenu ; if the player chose Cancel
+	jp z, .loop ; if the player chose Cancel
 	dec b
 	cp b
 	jr z, .choseSwitch
