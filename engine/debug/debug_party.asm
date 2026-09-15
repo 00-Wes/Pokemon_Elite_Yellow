@@ -116,6 +116,7 @@ DebugItemsList:
 	db ESCAPE_ROPE, 99
 	db RARE_CANDY, 99
 	db HP_UP, 99
+	db MAX_REPEL, 99
 	db SECRET_KEY, 1
 	db CARD_KEY, 1
 	db FULL_HEAL, 99

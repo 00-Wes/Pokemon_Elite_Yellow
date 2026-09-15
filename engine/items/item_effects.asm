@@ -1,6 +1,8 @@
 UseItem_::
 	ld a, 1
 	ld [wActionResultOrTookBattleTurn], a ; initialise to success value
+	xor a
+	ld [wItemQuantity], a ; clear stale quantity from a previous toss/PC menu
 	ld a, [wcf91] ;contains item_ID
 	cp HM01
 	jp nc, ItemUseTMHM

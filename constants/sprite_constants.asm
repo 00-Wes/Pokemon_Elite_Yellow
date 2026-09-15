@@ -107,6 +107,7 @@
 	const SPRITE_DODUO
 	const SPRITE_VAPOREON
 	const SPRITE_FLYING_PIKACHU          ; new
+	const SPRITE_ITEM_BALL               ; walking-slot poke ball, for maps out of still sprite slots
 DEF FIRST_STILL_SPRITE EQU const_value
 	const SPRITE_POKE_BALL               ; $47
 	const SPRITE_HELIX_FOSSIL            ; $48

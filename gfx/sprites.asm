@@ -144,6 +144,7 @@ SECTION "NPC Sprites 7", ROMX
 KabutoSprite::           INCBIN "gfx/sprites/kabuto.2bpp"
 JolteonSprite::          INCBIN "gfx/sprites/jolteon.2bpp"
 FlyingPikachuSprite::    INCBIN "gfx/sprites/flyingpikachu.2bpp"
+PokeBallItemSprite::     INCBIN "gfx/sprites/poke_ball_item.2bpp"
 
 
 SECTION "Mon Icons 1", ROMX
