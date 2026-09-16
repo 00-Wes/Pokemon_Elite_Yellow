@@ -226,6 +226,14 @@ DisplayTwoOptionMenu:
 	ld [wMenuWatchMovingOutOfBounds], a
 	push hl
 	ld hl, wTwoOptionMenuID
+	bit 6, [hl] ; should B button choose the first menu item instead of the second?
+	res 6, [hl]
+	ld a, 0
+	jr z, .storeBButtonBehavior
+	ld a, 1
+.storeBButtonBehavior
+	ldh [hTwoOptionMenuBButtonChoosesFirstItem], a
+	xor a
 	bit 7, [hl] ; select second menu item by default?
 	res 7, [hl]
 	jr z, .storeCurrentMenuItem
@@ -283,13 +291,21 @@ DisplayTwoOptionMenu:
 	call HandleMenuInput
 	pop hl
 	bit BIT_B_BUTTON, a
-	jr nz, .choseSecondMenuItem ; automatically choose the second option if B is pressed
+	jr z, .pressedAButton
+	ldh a, [hTwoOptionMenuBButtonChoosesFirstItem]
+	and a
+	jr nz, .choseFirstMenuItem ; B button forced to choose the first option
+	jr .choseSecondMenuItem ; automatically choose the second option if B is pressed
 .pressedAButton
 	ld a, [wCurrentMenuItem]
 	ld [wChosenMenuItem], a
 	and a
 	jr nz, .choseSecondMenuItem
 ; chose first menu item
+.choseFirstMenuItem
+	xor a
+	ld [wCurrentMenuItem], a
+	ld [wChosenMenuItem], a
 	ld a, CHOSE_FIRST_ITEM
 	ld [wMenuExitMethod], a
 	ld c, 15

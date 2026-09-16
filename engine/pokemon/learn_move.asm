@@ -80,6 +80,9 @@ AbandonLearning:
 	lb bc, 8, 15
 	ld a, TWO_OPTION_MENU
 	ld [wTextBoxID], a
+	ld a, [wTwoOptionMenuID]
+	set 6, a ; make the B button choose YES (abandon learning the move)
+	ld [wTwoOptionMenuID], a
 	call DisplayTextBoxID ; yes/no menu
 	ld a, [wCurrentMenuItem]
 	and a

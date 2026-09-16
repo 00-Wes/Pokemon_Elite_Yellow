@@ -403,7 +403,9 @@ hFieldMoveMonMenuTopMenuItemX:: db
 
 hPikachuSpriteVRAMOffset:: db
 
-	ds 1
+; set (via bit 6 of wTwoOptionMenuID) when the B button should choose the
+; first menu item instead of the second for a given two-option menu
+hTwoOptionMenuBButtonChoosesFirstItem:: db
 
 ; 0 if DMG, != 0 if GBC
 hGBC:: db
