@@ -965,6 +965,9 @@ ItemUseMedicine:
 	jr c, .skipQuantityPrompt
 	cp RARE_CANDY + 1
 	jr nc, .skipQuantityPrompt
+	ld a, [wWhichPokemon]
+	push af
+	ld a, [wQuantityItemID]
 	ld b, a
 	predef GetQuantityOfItemInBag
 	ld a, [wQuantityItemID]
@@ -983,17 +986,19 @@ ItemUseMedicine:
 	ldh [hJoy7], a
 	call DisplayChooseQuantityMenu
 	inc a
-	jp z, .canceledItemUse
+	jr nz, .quantityConfirmed
+	pop af
+	jp .canceledItemUse
+.quantityConfirmed
 	ld a, [wItemQuantity]
 	ld [wMaxItemQuantity], a
-	ld a, [wWhichPokemon]
-	ld [wQuantityPartySlot], a
-	ld [wPartyAndBillsPCSavedMenuItem], a
 	ld a, USE_ITEM_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
 	call DrawPartyMenu
-	ld a, [wQuantityPartySlot]
+	pop af
+	ld [wUsedItemOnWhichPokemon], a
 	ld [wWhichPokemon], a
+	ld [wPartyAndBillsPCSavedMenuItem], a
 	ld a, [wQuantityItemID]
 	ld [wcf91], a
 .skipQuantityPrompt
@@ -1504,11 +1509,13 @@ ItemUseMedicine:
 
 .vitaminsDone
 	ld hl, wPartyMons
-	ld a, [wQuantityPartySlot]
+	ld a, [wUsedItemOnWhichPokemon]
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
 	call .recalculateStats
 	call .printVitaminStatRose
+	ld a, $01
+	ld [wUpdateSpritesEnabled], a
 	ld a, [wQuantityBagSlot]
 	ld [wWhichPokemon], a
 	ld a, [wMaxItemQuantity]
@@ -1526,7 +1533,7 @@ ItemUseMedicine:
 	jr z, .showVitaminNoEffect
 	push af
 	ld hl, wPartyMons
-	ld a, [wQuantityPartySlot]
+	ld a, [wUsedItemOnWhichPokemon]
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
 	call .recalculateStats
@@ -1537,6 +1544,8 @@ ItemUseMedicine:
 	call .printVitaminStatRose
 	call RemoveUsedItem
 .showVitaminNoEffect
+	ld a, $01
+	ld [wUpdateSpritesEnabled], a
 	ld hl, VitaminNoEffectText
 	call PrintText
 	jp GBPalWhiteOut
@@ -1561,8 +1570,7 @@ ItemUseMedicine:
 	ld de, wStringBuffer
 	ld bc, 10
 	call CopyData ; copy the stat's name to wStringBuffer
-	ld a, [wQuantityPartySlot]
-	ld [wUsedItemOnWhichPokemon], a
+	ld a, [wUsedItemOnWhichPokemon]
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
 	ld a, SFX_HEAL_AILMENT
@@ -1693,8 +1701,7 @@ ItemUseMedicine:
 	ld a, [hl]
 	adc b
 	ld [hl], a
-	ld a, [wQuantityPartySlot]
-	ld [wUsedItemOnWhichPokemon], a
+	ld a, [wUsedItemOnWhichPokemon]
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
 	ld a, RARE_CANDY_MSG
@@ -1705,21 +1712,21 @@ ItemUseMedicine:
 	pop af
 	ld [wMaxItemQuantity], a
 	ld c, a
-	ld a, [wQuantityPartySlot]
+	ld a, [wUsedItemOnWhichPokemon]
 	ld b, a
 	call .learnMovesFromRareCandyBatch
 	pop de
-	ld a, [wQuantityPartySlot]
+	ld a, d
 	ld [wWhichPokemon], a
 	ld [wPartyAndBillsPCSavedMenuItem], a
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 	call LoadMonData
-	ld a, [wcf91]
+	ld a, e
 	ld [wd11e], a
-	ld a, [wQuantityPartySlot]
+	ld a, d
 	ld [wWhichPokemon], a
-	ld a, [wcf91]
+	ld a, e
 	ld [wd0b5], a
 	ld d, $01
 	callfar PrintStatsBox ; display new stats text box
@@ -1744,7 +1751,6 @@ ItemUseMedicine:
 	pop af
 	ld [wcf91], a
 	pop af
-	ld a, [wUsedItemOnWhichPokemon]
 	ld [wWhichPokemon], a
 	ld [wPartyAndBillsPCSavedMenuItem], a
 .rareCandysDone

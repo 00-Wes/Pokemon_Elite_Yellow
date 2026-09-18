@@ -189,7 +189,6 @@ GoBackToPartyMenu::
 	call PartyMenuInit
 	call RedrawPartyMenu
 	jp HandlePartyMenuInput
-
 PartyMenuInit::
 	ld a, 1 ; hardcoded bank
 	call BankswitchHome
@@ -199,22 +198,34 @@ PartyMenuInit::
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 	ld [wMenuWatchMovingOutOfBounds], a
-	ld hl, wTopMenuItemY
-	inc a
-	ld [hli], a ; top menu item Y
-	xor a
-	ld [hli], a ; top menu item X
-	ld a, [wPartyAndBillsPCSavedMenuItem]
-	push af
-	ld [hli], a ; current menu item ID
-	inc hl
 	ld a, [wPartyCount]
 	and a ; are there more than 0 pokemon in the party?
-	jr z, .storeMaxMenuItemID
+	jr z, .noMaxMenuItem
 	dec a
 ; if party is not empty, the max menu item ID is ([wPartyCount] - 1)
 ; otherwise, it is 0
-.storeMaxMenuItemID
+.noMaxMenuItem
+	ld b, a ; b = max menu item ID
+	ld a, [wPartyAndBillsPCSavedMenuItem]
+	cp b
+	jr z, .savedMenuItemInRange
+	jr c, .savedMenuItemInRange
+; the saved cursor position is stale/out of range (e.g. left over from another
+; menu that reused the same variables), so clamp it back into the party list
+	ld a, b
+.savedMenuItemInRange
+	ld [wPartyAndBillsPCSavedMenuItem], a
+	ld hl, wTopMenuItemY
+	push af
+	ld a, 1
+	ld [hli], a ; top menu item Y
+	xor a
+	ld [hli], a ; top menu item X
+	pop af
+	push af
+	ld [hli], a ; current menu item ID
+	inc hl
+	ld a, b
 	ld [hli], a ; max menu item ID
 	ld a, [wForcePlayerToChooseMon]
 	and a

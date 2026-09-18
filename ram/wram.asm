@@ -2500,7 +2500,7 @@ wFirstLockTrashCanIndex:: db
 wSecondLockTrashCanIndex:: db
 
 	ds 1
-	
+
 wGameStage:: db
 	; $00 = before champion fight
 	; $01 = post game
@@ -2562,8 +2562,7 @@ wDVCalcVar2::
 
 ; the trainer the player must face after getting a wrong answer in the Cinnabar
 ; gym quiz
-wOpponentAfterWrongAnswer::
-wQuantityPartySlot:: db
+wOpponentAfterWrongAnswer:: db
 
 ; index of current map script, mostly used as index for function pointer array
 ; mostly copied from map-specific map script pointer and written back later
