@@ -541,7 +541,7 @@ MtMoonB2FDomeFossilText:
 	ld [wMissableObjectIndex], a
 	predef HideObject
 	SetEvent EVENT_GOT_DOME_FOSSIL
-	ld a, LOW(HS_FUCHSIACITY_OMANYTE)
+	ld a, HS_FUCHSIACITY_OMANYTE
 	ld [wMissableObjectIndex], a
 	predef ShowObject
 	ld a, SCRIPT_MTMOONB2F_MOVE_SUPER_NERD
@@ -571,7 +571,7 @@ MtMoonB2FHelixFossilText:
 	ld [wMissableObjectIndex], a
 	predef HideObject
 	SetEvent EVENT_GOT_HELIX_FOSSIL
-	ld a, LOW(HS_FUCHSIACITY_KABUTO)
+	ld a, HS_FUCHSIACITY_KABUTO
 	ld [wMissableObjectIndex], a
 	predef ShowObject
 	ld a, SCRIPT_MTMOONB2F_MOVE_SUPER_NERD

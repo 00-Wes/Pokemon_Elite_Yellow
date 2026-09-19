@@ -110,10 +110,11 @@ SpriteSheetPointerTable:
 	overworld_sprite KangaskhanSprite, 12       ; SPRITE_KANGASKHAN
 	overworld_sprite SlowpokeSprite, 12         ; SPRITE_SLOWPOKE
 	overworld_sprite DoduoSprite, 12    	    ; SPRITE_DODUO
-	overworld_sprite FlyingPikachuSprite, 12    ; SPRITE_FLYING_PIKACHU
-; --- the following are the STILL sprites, they don't move ---
+	; --- the following are the STILL sprites, they don't move ---
 	overworld_sprite VaporeonSprite, 4    	    ; SPRITE_VAPOREON
-	overworld_sprite PokeBallItemSprite, 12      ; SPRITE_ITEM_BALL
+	overworld_sprite FlyingPikachuSprite, 12    ; SPRITE_FLYING_PIKACHU
+	overworld_sprite PokeBallItemSprite, 12     ; SPRITE_ITEM_BALL
+	overworld_sprite OmanyteSprite, 12           ; SPRITE_OMANYTE
 	overworld_sprite PokeBallSprite, 4          ; SPRITE_POKE_BALL
 	overworld_sprite HelixFossilSprite, 4       ; SPRITE_HELIX_FOSSIL
 	overworld_sprite BoulderSprite, 4           ; SPRITE_BOULDER
