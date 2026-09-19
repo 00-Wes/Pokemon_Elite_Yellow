@@ -272,31 +272,60 @@ ToText:
 BuildFlyLocationsList:
 	ld hl, wFlyAnimUsingCoordList
 	ld [hl], $ff
-	inc hl ; it's wFlyLocationsList
-	ld a, [wTownVisitedFlag]
-	ld e, a
-	ld a, [wTownVisitedFlag + 1]
-	ld d, a
-	lb bc, 0, NUM_FLY_LOCATIONS
+	ld de, wFlyLocationsList
+	ld hl, FlyLocationOrder
+	ld b, NUM_FLY_LOCATIONS
 .loop
-	srl d
-	rr e
-	ld a, NOT_VISITED
-	jr nc, .gotValue
-	ld a, b ; store the map number of the town if it has been visited
-	cp FLYLOC_ROUTE_4_CENTER
-	jr c, .gotValue
-	ld a, ROUTE_4
-	jr z, .gotValue
-	ld a, ROUTE_10
-.gotValue
-	ld [hl], a
+	ld a, [hli]
+	push hl
+	push bc
+	ld c, a
+	ld b, 0
+	ld hl, wTownVisitedFlag
+	add hl, bc
+	ld a, [hl]
+	pop bc
+	pop hl
+	and [hl]
 	inc hl
-	inc b
-	dec c
+	push de
+	push af
+	ld a, [hli]
+	pop de
+	ld c, a
+	ld a, d
+	and a
+	ld a, c
+	pop de
+	jr nz, .gotValue
+	ld a, NOT_VISITED
+.gotValue
+	ld [de], a
+	inc de
+	dec b
 	jr nz, .loop
-	ld [hl], $ff
+	ld a, $ff
+	ld [de], a
 	ret
+
+MACRO fly_location_order
+	db (\1) / 8, 1 << ((\1) % 8), \2
+ENDM
+
+FlyLocationOrder:
+	fly_location_order PALLET_TOWN, PALLET_TOWN
+	fly_location_order VIRIDIAN_CITY, VIRIDIAN_CITY
+	fly_location_order PEWTER_CITY, PEWTER_CITY
+	fly_location_order FLYLOC_ROUTE_4_CENTER, ROUTE_4
+	fly_location_order CERULEAN_CITY, CERULEAN_CITY
+	fly_location_order VERMILION_CITY, VERMILION_CITY
+	fly_location_order FLYLOC_ROUTE_10_CENTER, ROUTE_10
+	fly_location_order LAVENDER_TOWN, LAVENDER_TOWN
+	fly_location_order CELADON_CITY, CELADON_CITY
+	fly_location_order SAFFRON_CITY, SAFFRON_CITY
+	fly_location_order FUCHSIA_CITY, FUCHSIA_CITY
+	fly_location_order CINNABAR_ISLAND, CINNABAR_ISLAND
+	fly_location_order INDIGO_PLATEAU, INDIGO_PLATEAU
 
 TownMapUpArrow:
 	INCBIN "gfx/town_map/up_arrow.1bpp"

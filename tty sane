@@ -1,0 +1,77 @@
+[1mdiff --git a/engine/items/town_map.asm b/engine/items/town_map.asm[m
+[1mindex 236292d..e8d637a 100644[m
+[1m--- a/engine/items/town_map.asm[m
+[1m+++ b/engine/items/town_map.asm[m
+[36m@@ -272,32 +272,52 @@[m [mToText:[m
+ BuildFlyLocationsList:[m
+ 	ld hl, wFlyAnimUsingCoordList[m
+ 	ld [hl], $ff[m
+[31m-	inc hl ; it's wFlyLocationsList[m
+[31m-	ld a, [wTownVisitedFlag][m
+[31m-	ld e, a[m
+[31m-	ld a, [wTownVisitedFlag + 1][m
+[31m-	ld d, a[m
+[31m-	lb bc, 0, NUM_FLY_LOCATIONS[m
+[32m+[m	[32mld de, wFlyLocationsList[m
+[32m+[m	[32mld hl, FlyLocationOrder[m
+[32m+[m	[32mld b, NUM_FLY_LOCATIONS[m
+ .loop[m
+[31m-	srl d[m
+[31m-	rr e[m
+[32m+[m	[32mld a, [hli][m
+[32m+[m	[32mpush hl[m
+[32m+[m	[32mld c, a[m
+[32m+[m	[32mpush bc[m
+[32m+[m	[32mld b, FLAG_TEST[m
+[32m+[m	[32mld hl, wTownVisitedFlag[m
+[32m+[m	[32mcall FlagAction[m
+[32m+[m	[32mld a, c[m
+[32m+[m	[32mpop bc[m
+[32m+[m	[32mpop hl[m
+[32m+[m	[32mand a[m
+[32m+[m	[32mld a, [hli][m
+[32m+[m	[32mjr nz, .gotValue[m
+ 	ld a, NOT_VISITED[m
+[31m-	jr nc, .gotValue[m
+[31m-	ld a, b ; store the map number of the town if it has been visited[m
+[31m-	cp FLYLOC_ROUTE_4_CENTER[m
+[31m-	jr c, .gotValue[m
+[31m-	ld a, ROUTE_4[m
+[31m-	jr z, .gotValue[m
+[31m-	ld a, ROUTE_10[m
+ .gotValue[m
+[31m-	ld [hl], a[m
+[31m-	inc hl[m
+[31m-	inc b[m
+[31m-	dec c[m
+[32m+[m	[32mld [de], a[m
+[32m+[m	[32minc de[m
+[32m+[m	[32mdec b[m
+ 	jr nz, .loop[m
+[31m-	ld [hl], $ff[m
+[32m+[m	[32mld a, $ff[m
+[32m+[m	[32mld [de], a[m
+ 	ret[m
+ [m
+[32m+[m[32mMACRO fly_location_order[m
+[32m+[m	[32mdb \1, \2[m
+[32m+[m[32mENDM[m
+[32m+[m
+[32m+[m[32mFlyLocationOrder:[m
+[32m+[m	[32mfly_location_order PALLET_TOWN, PALLET_TOWN[m
+[32m+[m	[32mfly_location_order VIRIDIAN_CITY, VIRIDIAN_CITY[m
+[32m+[m	[32mfly_location_order PEWTER_CITY, PEWTER_CITY[m
+[32m+[m	[32mfly_location_order FLYLOC_ROUTE_4_CENTER, ROUTE_4[m
+[32m+[m	[32mfly_location_order CERULEAN_CITY, CERULEAN_CITY[m
+[32m+[m	[32mfly_location_order FLYLOC_ROUTE_10_CENTER, ROUTE_10[m
+[32m+[m	[32mfly_location_order LAVENDER_TOWN, LAVENDER_TOWN[m
+[32m+[m	[32mfly_location_order VERMILION_CITY, VERMILION_CITY[m
+[32m+[m	[32mfly_location_order CELADON_CITY, CELADON_CITY[m
+[32m+[m	[32mfly_location_order SAFFRON_CITY, SAFFRON_CITY[m
+[32m+[m	[32mfly_location_order FUCHSIA_CITY, FUCHSIA_CITY[m
+[32m+[m	[32mfly_location_order CINNABAR_ISLAND, CINNABAR_ISLAND[m
+[32m+[m	[32mfly_location_order INDIGO_PLATEAU, INDIGO_PLATEAU[m
+[32m+[m
+ TownMapUpArrow:[m
+ 	INCBIN "gfx/town_map/up_arrow.1bpp"[m
+ TownMapUpArrowEnd:[m
