@@ -2636,15 +2636,27 @@ ItemUseTMHM:
 	ld a, [wcf91]
 	push af
 .chooseMon
+	and a ; clear carry: redraw the party menu with the white flash
+	jr .prepareToShowPartyMenu
+.abandonedLearning
+	scf ; set carry: redraw the party menu without the white flash
+.prepareToShowPartyMenu
+	push af
 	ld hl, wStringBuffer
 	ld de, wTempMoveNameBuffer
 	ld bc, 14
-	call CopyData ; save the move name because DisplayPartyMenu will overwrite it
+	call CopyData ; save the move name because the party menu redraw will overwrite it
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
 	ld a, TMHM_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
+	pop af
+	jr nc, .showPartyMenu
+	call GoBackToPartyMenu
+	jr .afterOpeningPartyMenu
+.showPartyMenu
 	call DisplayPartyMenu
+.afterOpeningPartyMenu
 	push af
 	ld hl, wTempMoveNameBuffer
 	ld de, wStringBuffer
@@ -2674,21 +2686,21 @@ ItemUseTMHM:
 	call PlaySoundWaitForCurrent
 	ld hl, MonCannotLearnMachineMoveText
 	call PrintText
-	jr .chooseMon
+	jr .abandonedLearning
 
 .checkIfAlreadyLearnedMove
 	callfar CheckIfMoveIsKnown ; check if the pokemon already knows the move
-	jr c, .chooseMon
+	jr c, .abandonedLearning ; if so, return to the party menu without the white flash
 	predef LearnMove ; teach move
+	ld a, b
+	and a ; did the player abandon learning the move?
+	jr z, .abandonedLearning ; if so, return to the party menu instead of leaving the bag menu
 	ld a, [wWhichPokemon]
 	ld d, a
 	pop af
 	ld [wcf91], a
 	pop af
 	ld [wWhichPokemon], a
-	ld a, b
-	and a
-	ret z
 
 	ld a, [wWhichPokemon]
 	push af

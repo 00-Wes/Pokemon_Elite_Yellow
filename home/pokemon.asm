@@ -189,6 +189,7 @@ GoBackToPartyMenu::
 	call PartyMenuInit
 	call RedrawPartyMenu
 	jp HandlePartyMenuInput
+
 PartyMenuInit::
 	ld a, 1 ; hardcoded bank
 	call BankswitchHome

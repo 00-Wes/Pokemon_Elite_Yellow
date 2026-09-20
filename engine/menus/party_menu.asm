@@ -68,9 +68,9 @@ RedrawPartyMenu_::
 .skipUnfilledRightArrow
 	ld a, [wPartyMenuTypeOrMessageID] ; menu type
 	cp TMHM_PARTY_MENU
-	jr z, .teachMoveMenu
+	jp z, .teachMoveMenu
 	cp EVO_STONE_PARTY_MENU
-	jr z, .evolutionStoneMenu
+	jp z, .evolutionStoneMenu
 	push hl
 	ld bc, 14 ; 14 columns to the right
 	add hl, bc
@@ -89,16 +89,21 @@ RedrawPartyMenu_::
 	ldh [hUILayoutFlags], a
 	call SetPartyMenuHPBarColor ; color the HP bar (on SGB)
 	pop hl
-	jr .printLevel
+	jp .printLevel
 .teachMoveMenu
 	push hl
 	predef CanLearnTM ; check if the pokemon can learn the move
 	pop hl
-	ld de, .ableToLearnMoveText
-	ld a, c
-	and a
-	jr nz, .placeMoveLearnabilityString
 	ld de, .notAbleToLearnMoveText
+	ld a, c
+	and a ; can the pokemon learn the move?
+	jr z, .placeMoveLearnabilityString
+	push hl
+	call .CheckIfCurrentMonKnowsMove
+	pop hl
+	ld de, .knowsMoveText
+	jr z, .placeMoveLearnabilityString
+	ld de, .ableToLearnMoveText
 .placeMoveLearnabilityString
 	push hl
 	ld bc, 20 + 9 ; down 1 row and right 9 columns
@@ -121,6 +126,33 @@ RedrawPartyMenu_::
 	db "ABLE@"
 .notAbleToLearnMoveText
 	db "NOT ABLE@"
+.knowsMoveText
+	db "KNOWS@"
+
+; checks if the current party mon already knows the move in wMoveNum
+; returns z if known, nz if not (does not print any text)
+.CheckIfCurrentMonKnowsMove
+	push bc
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMon1Moves
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes
+	ld a, [wMoveNum]
+	ld b, a
+	ld c, NUM_MOVES
+.checkMoveLoop
+	ld a, [hli]
+	cp b
+	jr z, .moveKnown
+	dec c
+	jr nz, .checkMoveLoop
+	pop bc
+	or 1 ; set nz
+	ret
+.moveKnown
+	pop bc
+	cp a ; set z
+	ret
 .evolutionStoneMenu
 	push hl
 	ld hl, EvosMovesPointerTable
@@ -173,7 +205,7 @@ RedrawPartyMenu_::
 	add hl, bc
 	call PlaceString
 	pop hl
-	jr .printLevel
+	jp .printLevel
 .ableToEvolveText
 	db "ABLE@"
 .notAbleToEvolveText
