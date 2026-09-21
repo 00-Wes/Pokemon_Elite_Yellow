@@ -149,7 +149,8 @@ DisplayPokemartDialogue_::
 	ld [wListMenuID], a
 	call DisplayListMenuID
 	jr c, .returnToMainPokemartMenu ; if the player closed the menu
-	ld a, 99
+	call GetItemPrice ; uses [wcf91], sets hItemPrice to the selected item's unit price
+	call GetMaxAffordableItemQuantity ; a = highest quantity (1-99) the player can afford
 	ld [wMaxItemQuantity], a
 	xor a
 	ldh [hHalveItemPrices], a ; don't halve item prices when buying
@@ -225,6 +226,40 @@ DisplayPokemartDialogue_::
 	call UpdateSprites
 	ld a, [wSavedListScrollOffset]
 	ld [wListScrollOffset], a
+	ret
+
+GetMaxAffordableItemQuantity:
+; Computes the highest quantity (1-99) of the item currently priced in
+; hItemPrice that the player can afford with their current money.
+; Out: a = max affordable quantity, capped between 1 and 99
+	ld hl, hMoney
+	xor a
+	ld [hli], a
+	ld [hli], a
+	ld [hl], a ; running total = 0
+	ld b, 0 ; quantity being tested
+.loop
+	inc b
+	ld c, 3
+	ld de, hMoney + 2
+	ld hl, hItemPrice + 2
+	push bc
+	predef AddBCDPredef ; running total += item price
+	pop bc
+	ld de, wPlayerMoney
+	ld hl, hMoney
+	ld c, 3
+	call StringCmp ; carry set if the player's money is less than the running total
+	jr c, .cannotAffordQuantity
+	ld a, b
+	cp 99
+	jr c, .loop
+	ret ; b == 99, and the player can afford all 99
+.cannotAffordQuantity
+	ld a, b
+	dec a
+	ret nz
+	inc a ; always allow selecting a quantity of at least 1
 	ret
 
 PokemartBuyingGreetingText:

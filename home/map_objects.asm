@@ -71,44 +71,51 @@ IsItemInBag::
 	ret
 
 IsSurfingPikachuInParty::
-; set bit 6 of wd472 if true
+; set bit 6 of wd472 if the party member that would actually be used to Surf
+; (the first party member with SURF, matching HasPartyMove's selection order)
+; is Pikachu
 ; also calls Func_3467, which is a bankswitch to IsStarterPikachuInOurParty
 	ld a, [wd472]
 	and $3f
 	ld [wd472], a
-	ld hl, wPartyMon1
-	ld c, PARTY_LENGTH
+	ld a, [wPartyCount]
+	and a
+	jr z, .done
+	ld c, a
 	ld b, SURF
+	ld hl, wPartyMon1
 .loop
-	ld a, [hl]
-	cp STARTER_PIKACHU
-	jr nz, .notPikachu
 	push hl
-	ld de, $8
+	ld de, wPartyMon1Moves - wPartyMon1
 	add hl, de
 	ld a, [hli]
-	cp b ; does pikachu have surf as one of its moves
-	jr z, .hasSurf
+	cp b ; does this party mon have surf as one of its moves
+	jr z, .foundSurfMon
 	ld a, [hli]
 	cp b
-	jr z, .hasSurf
+	jr z, .foundSurfMon
 	ld a, [hli]
 	cp b
-	jr z, .hasSurf
-	ld a, [hli]
+	jr z, .foundSurfMon
+	ld a, [hl]
 	cp b
 	jr nz, .noSurf
-.hasSurf
+.foundSurfMon
+	pop hl
+	ld a, [hl] ; species of the party mon that will actually Surf
+	cp STARTER_PIKACHU
+	jr nz, .done
 	ld a, [wd472]
 	set 6, a
 	ld [wd472], a
+	jr .done
 .noSurf
 	pop hl
-.notPikachu
 	ld de, wPartyMon2 - wPartyMon1
 	add hl, de
 	dec c
 	jr nz, .loop
+.done
 	call Func_3467
 	ret
 

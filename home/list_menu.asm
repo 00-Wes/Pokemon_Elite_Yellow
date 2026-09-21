@@ -60,6 +60,7 @@ DisplayListMenuID::
 .noSort
 	ld a, A_BUTTON | B_BUTTON | SELECT
 .continue
+	call SetListMenuWatchedKeys ; adds D_LEFT|D_RIGHT for item lists
 	ld [wMenuWatchedKeys], a
 	ld c, 10
 	call DelayFrames
@@ -191,13 +192,17 @@ DisplayListMenuIDLoop::
 	ld hl, wd730
 	res 6, [hl] ; turn on letter printing delay
 	jp BankswitchBack
-.checkOtherKeys ; check B, SELECT, Up, and Down keys
+.checkOtherKeys ; check B, SELECT, Start, Up, Down, Left, and Right keys
 	bit BIT_B_BUTTON, a
 	jp nz, ExitListMenu ; if so, exit the menu
 	bit BIT_SELECT, a
 	jp nz, HandleItemListSwapping ; if so, allow the player to swap menu entries
 	bit 3,a ; was the start button pressed?
 	jp nz,.sortItems ; if so, allow the player to swap menu entries
+	bit BIT_D_RIGHT, a
+	jp nz, PageDownItemList ; page down one screen's worth of rows
+	bit BIT_D_LEFT, a
+	jp nz, PageUpItemList ; page up one screen's worth of rows
 	ld b, a
 	bit BIT_D_DOWN, b
 	ld hl, wListScrollOffset

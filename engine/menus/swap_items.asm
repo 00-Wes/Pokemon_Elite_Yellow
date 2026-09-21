@@ -1,3 +1,46 @@
+; a = base watched keys; returns a = base keys, plus D_LEFT|D_RIGHT for item lists
+SetListMenuWatchedKeys::
+	ld b, a
+	ld a, [wListMenuID]
+	cp ITEMLISTMENU
+	jr z, .allowPageScroll
+	cp PRICEDITEMLISTMENU
+	jr nz, .noPageScroll
+.allowPageScroll
+	ld a, b
+	or D_LEFT | D_RIGHT
+	ret
+.noPageScroll
+	ld a, b
+	ret
+
+PageDownItemList:: ; scroll down one page (4 rows) at a time, without scrolling past the Cancel option
+	ld hl, wListScrollOffset
+	ld a, [wListCount]
+	sub 3 ; max allowed scroll offset is wListCount - 3, so Cancel stays reachable
+	jr nc, .haveMax
+	xor a ; list is too short to page at all
+.haveMax
+	ld b, a
+	ld a, [hl]
+	add 4
+	cp b
+	jr c, .setOffset
+	ld a, b
+.setOffset
+	ld [hl], a
+	jp DisplayListMenuIDLoop
+
+PageUpItemList:: ; scroll up one page (4 rows) at a time
+	ld hl, wListScrollOffset
+	ld a, [hl]
+	sub 4
+	jr nc, .setOffset
+	xor a
+.setOffset
+	ld [hl], a
+	jp DisplayListMenuIDLoop
+
 HandleItemListSwapping::
 	ld a, [wListMenuID]
 	cp ITEMLISTMENU
