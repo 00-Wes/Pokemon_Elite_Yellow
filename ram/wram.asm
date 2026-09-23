@@ -2395,7 +2395,9 @@ wDungeonWarpDestinationMap:: db
 ; which dungeon warp within the source map was used
 wWhichDungeonWarp:: db
 
-wUnusedD71F:: db
+; toggled with SELECT/START while viewing a mon's stats screen
+; STATUS_VIEW_NORMAL, STATUS_VIEW_STATEXP, or STATUS_VIEW_DV
+wStatusScreenViewMode:: db
 
 	ds 8
 

@@ -3,6 +3,12 @@
 ; hFlags_0xFFF6 = hUILayoutFlags
 ; hTilesetType = hTilesetAnimations
 
+; wStatusScreenViewMode values (matches SELECT/START bits so the original
+; hold-to-view bit tests can be reused against the stored toggle state)
+STATUS_VIEW_NORMAL  EQU 0
+STATUS_VIEW_STATEXP EQU SELECT
+STATUS_VIEW_DV      EQU START
+
 DrawHP:
 ; Draws the HP bar in the stats screen
 	call GetPredefRegisters
@@ -122,45 +128,7 @@ StatusScreen:
 	call PlaceString ; "TYPE1/"
 	coord hl, 11, 3
 	predef DrawHP
-
-	;joenote - print stat exp if select is held
-	;parse dv stats here so they can be grabbed later
-	push de
-	ld bc, SCREEN_WIDTH + 1
-	add hl, bc
-	call DVParse
-	call Joypad
-	
-	ld a, [hJoyHeld]
-	and SELECT | START
-	jr z, .noblank
-	push hl
-	ld a, " "
-	ld [hli], a
-	ld [hli], a
-	ld [hli], a
-	ld [hli], a
-	ld [hli], a
-	ld [hli], a
-	ld [hli], a
-	pop hl
-.noblank
-	
-	ld a, [hJoyHeld]
-	bit BIT_SELECT, a
-	jr z, .checkstart
-	ld de, wLoadedMonHPExp
-	lb bc, 2, 5
-	jr .printnum
-.checkstart	;print DVs if start is held
-	bit BIT_START, a
-	jr z, .doregular
-	ld de, wDVCalcVar2 + 4
-	lb bc, 1, 2
-.printnum
-	call PrintNumber
-.doregular
-	pop de
+	callfar DrawStatusScreenToggleNumber
 	ld hl, wStatusScreenHPBarColor
 	call GetHealthBarColor
 	ld b, SET_PAL_STATUS_SCREEN
@@ -324,10 +292,8 @@ PrintStatsBox:
 	pop bc
 	add hl, bc
 	; New Stat Exp / DVs display functionality, from shin pokered.
-	;joenote - print stat exp if select is held
-	call Joypad
-	ld a, [hJoyHeld]
-	bit 2, a
+	ld a, [wStatusScreenViewMode]
+	bit BIT_SELECT, a
 	jr z, .checkstart
 	dec l	;shift alignment 2 tiles to the left
 	dec l
@@ -340,8 +306,8 @@ PrintStatsBox:
 	call PrintStat
 	ld de, wLoadedMonSpeedExp
 	jp PrintNumber
-.checkstart	;joenote - print DVs if start is held
-	bit 3, a
+.checkstart	;print DVs if DV view is active
+	bit BIT_START, a
 	jr z, .doregular
 	ld de, wDVCalcVar2
 	lb bc, 1, 2
@@ -554,75 +520,27 @@ StatusScreen_PrintPP:
 	jr nz, StatusScreen_PrintPP
 	ret
 
-; DV parsing from shin pokered
-;joenote - parse DV scores
-DVParse:
-	push hl
-	push bc
-	ld hl, wDVCalcVar2
-	ld b, $00
-
-	ld a, [wLoadedMonDVs]	;get attack dv
-	swap a
-	and $0F
-	ld [hl], a
-	inc hl
-	and $01
-	sla a
-	sla a
-	sla a
-	or b
-	ld b, a
-	
-	
-	ld a, [wLoadedMonDVs]	;get defense dv
-	and $0F
-	ld [hl], a
-	inc hl
-	and $01
-	sla a
-	sla a
-	or b
-	ld b, a
-	
-	ld a, [wLoadedMonDVs + 1]	;get speed dv
-	swap a
-	and $0F
-	ld [hl], a
-	inc hl
-	and $01
-	sla a
-	or b
-	ld b, a
-	
-	ld a, [wLoadedMonDVs + 1]	;get special dv
-	and $0F
-	ld [hl], a
-	inc hl
-	and $01
-	or b
-	ld b, a
-
-	ld [hl], b	;load hp dv
-	
-	pop bc
-	pop hl
-	ret
-
 ;;;;;;;;;; PureRGBnote: ADDED: code that allows immediately backing out of the status menu with B from all status menus
 
 StatusScreenOriginal:
 	ldh a, [hTileAnimations]
 	push af
 	call StatusScreen
-	ld b, A_BUTTON | B_BUTTON
+.waitPage1
+	ld b, A_BUTTON | B_BUTTON | SELECT | START
 	call PokedexStatusWaitForButtonPressLoop
 	bit BIT_B_BUTTON, a
 	jr nz, ExitStatusScreen
+	ld e, a ; Bankswitch clobbers a, so pass the button mask via e
+	callfar CheckToggleView
+	jr c, .waitPage1
+.showPage2
 	call StatusScreen2
 	ld b, A_BUTTON | B_BUTTON
 	call PokedexStatusWaitForButtonPressLoop
 ExitStatusScreen:
+	xor a
+	ld [wStatusScreenViewMode], a
 	pop af
 	ldh [hTileAnimations], a
 	ld hl, wd72c
@@ -640,6 +558,7 @@ StatusScreenLoop:
 	push af
 .displayNextMon
 	call StatusScreen
+.waitPage1
 	call PokemonStatusWaitForButtonPress
 	bit BIT_D_UP, a
 	jr nz, .prevMon
@@ -647,6 +566,10 @@ StatusScreenLoop:
 	jr nz, .nextMon
 	bit BIT_B_BUTTON, a
 	jr nz, .exitStatus
+	ld e, a ; Bankswitch clobbers a, so pass the button mask via e
+	callfar CheckToggleView
+	jr c, .waitPage1
+.showPage2
 	call StatusScreen2
 	call PokemonStatusWaitForButtonPress
 	bit BIT_D_UP, a
@@ -670,7 +593,7 @@ StatusScreenLoop:
 
 PokemonStatusWaitForButtonPress:
 .decideButtons
-	ld a, A_BUTTON | B_BUTTON
+	ld a, A_BUTTON | B_BUTTON | SELECT | START
 	ld b, a
 	ld a, [wWhichPokemon]
 	and a
