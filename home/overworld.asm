@@ -260,23 +260,22 @@ OverworldLoopLessDelay::
 	bit 6,a ; jumping a ledge?
 	jr nz,.normalPlayerSpriteAdvancement
 	call DoBikeSpeedup ; if riding a bike and not jumping a ledge
-	call DoBikeSpeedup ; added
-	call DoBikeSpeedup ; added
-	jr .notRunning
+	call DoBikeSpeedup
+	call DoBikeSpeedup
 .normalPlayerSpriteAdvancement
 	ld a, [wNoSprintSteps]
-	cp 0
+	and a
 	jr nz, .notRunning ; Don't sprite right after jumping a ledge
-	; Make you surf at bike speed
 	ld a,[wWalkBikeSurfState]
-	cp a, $02
-	jr z, .surfFaster
+	cp $02 ; surfing?
+	jr nz, .checkRunning
+	call DoBikeSpeedup
+.checkRunning
 	; Add running shoes
-	ld a, [hJoyHeld] ; Check what buttons are being pressed
+	ldh a, [hJoyHeld] ; Check what buttons are being pressed
 	and B_BUTTON ; Are you holding B?
 	jr z, .notRunning ; If you aren't holding B, skip ahead to step normally.
-.surfFaster
-	call DoBikeSpeedup ; Make you go faster if you were holding B
+	callfar ExtraHeldBSpeed
 .notRunning ; Normal code resumes here
 	ld a, [wNoSprintSteps] ; Load the value from wNoSpriteSteps into register a
 	cp 0                  ; Compare the value in a with 0
