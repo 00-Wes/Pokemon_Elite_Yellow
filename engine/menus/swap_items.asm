@@ -1,19 +1,3 @@
-; a = base watched keys; returns a = base keys, plus D_LEFT|D_RIGHT for item lists
-SetListMenuWatchedKeys::
-	ld b, a
-	ld a, [wListMenuID]
-	cp ITEMLISTMENU
-	jr z, .allowPageScroll
-	cp PRICEDITEMLISTMENU
-	jr nz, .noPageScroll
-.allowPageScroll
-	ld a, b
-	or D_LEFT | D_RIGHT
-	ret
-.noPageScroll
-	ld a, b
-	ret
-
 PageDownItemList:: ; scroll down one page (4 rows) at a time, without scrolling past the Cancel option
 	ld hl, wListScrollOffset
 	ld a, [wListCount]

@@ -104,13 +104,8 @@ ItemUsePtrTable:
 	dw ItemUsePPRestore  ; MAX_ELIXER
 
 ItemUseBall:
+	callfar CheckPartyOrBoxFullForBallThrow
 
-; Balls can't be used out of battle.
-	ld a, [wIsInBattle]
-	ld hl, wNumSafariBalls
-	dec [hl] ; remove a Safari Ball
-
-.skipSafariZoneCode
 	call RunDefaultPaletteCommand
 
 	ld a, $43 ; successful capture value
@@ -716,8 +711,7 @@ ItemUseBicycle::
 	ld [wWalkBikeSurfState], a ; change player state to walking
 	ld a, $00
 	ld [wPikachuSpawnState], a
-	call PlayDefaultMusic ; play walking music
-	ret
+	jr .updateBikeMusic
 
 .tryToGetOnBike
 	call IsBikeRidingAllowed
@@ -727,8 +721,11 @@ ItemUseBicycle::
 	ldh [hJoyHeld], a ; current joypad state
 	ld a, $1
 	ld [wWalkBikeSurfState], a ; change player state to bicycling
-	call PlayDefaultMusic ; play bike riding music
-	ret
+
+.updateBikeMusic
+	call CheckForNoBikingMusicMap
+	ret c
+	jp PlayDefaultMusic
 
 ; used for Surf out-of-battle effect
 ItemUseSurfboard:

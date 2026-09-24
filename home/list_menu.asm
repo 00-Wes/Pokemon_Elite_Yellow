@@ -60,7 +60,17 @@ DisplayListMenuID::
 .noSort
 	ld a, A_BUTTON | B_BUTTON | SELECT
 .continue
-	call SetListMenuWatchedKeys ; adds D_LEFT|D_RIGHT for item lists
+; inlined SetListMenuWatchedKeys (home/swap_items.asm is bank1, but this code
+; can run while banked to BANK(DisplayBattleMenu) for old man/Pikachu battles,
+; so a plain `call` there would execute the wrong bank's bytes)
+	ld b, a
+	ld a, [wListMenuID]
+	sub PRICEDITEMLISTMENU ; ITEMLISTMENU and PRICEDITEMLISTMENU are adjacent
+	cp 2
+	ld a, b
+	jr nc, .watchedKeysSet ; neither ITEMLISTMENU nor PRICEDITEMLISTMENU
+	or D_LEFT | D_RIGHT
+.watchedKeysSet
 	ld [wMenuWatchedKeys], a
 	ld c, 10
 	call DelayFrames
