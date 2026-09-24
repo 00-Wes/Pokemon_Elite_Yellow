@@ -155,6 +155,7 @@ PlayerSpinWhileMovingDown:
 	ld [hli], a ; wPlayerSpinWhileMovingUpOrDownAnimMaxY
 	call GetPlayerTeleportAnimFrameDelay
 	ld [hl], a ; wPlayerSpinWhileMovingUpOrDownAnimFrameDelay
+	ld hl, wFacingDirectionList
 	jp PlayerSpinWhileMovingUpOrDown
 
 
@@ -177,6 +178,7 @@ _LeaveMapAnim::
 	ld [hli], a ; wPlayerSpinWhileMovingUpOrDownAnimMaxY
 	call GetPlayerTeleportAnimFrameDelay
 	ld [hl], a ; wPlayerSpinWhileMovingUpOrDownAnimFrameDelay
+	ld hl, wFacingDirectionList
 	call PlayerSpinWhileMovingUpOrDown
 	call IsPlayerStandingOnWarpPadOrHole
 	ld a, b
@@ -736,6 +738,10 @@ GreenFishingTiles:
 _HandleMidJump::
 	ld a, [wPlayerJumpingYScreenCoordsIndex]
 	ld c, a
+	ldh a, [hOverworld60FPSPhase]
+	and a
+	ret z
+	ld a, c
 	inc a
 	cp $10
 	jr nc, .finishedJump

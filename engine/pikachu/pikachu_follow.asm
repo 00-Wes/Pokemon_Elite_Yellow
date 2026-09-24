@@ -830,13 +830,13 @@ asm_fc969:
 NormalPikachuFollow:
 	ld hl, wSpritePikachuStateData2WalkAnimationCounter - wSpritePikachuStateData1
 	add hl, bc
-	ld [hl], $8
+	ld [hl], $10
 	ld hl, wSpritePikachuStateData1MovementStatus - wSpritePikachuStateData1
 	add hl, bc
 	ld [hl], $3
 	call AddPikachuStepVector
 asm_fc9c3:
-	call TryDoubleAddPikachuStepVectorToScreenPixelCoords
+	call AddPikachuStepVectorToScreenPixelCoords60FPS
 	call GetPikachuWalkingAnimationSpeed
 	call UpdatePikachuWalkingSprite
 	ld hl, wSpritePikachuStateData2WalkAnimationCounter - wSpritePikachuStateData1
@@ -853,13 +853,13 @@ asm_fc9c3:
 FastPikachuFollow:
 	ld hl, wSpritePikachuStateData2WalkAnimationCounter - wSpritePikachuStateData1
 	add hl, bc
-	ld [hl], $4
+	ld [hl], $8
 	ld hl, wSpritePikachuStateData1MovementStatus - wSpritePikachuStateData1
 	add hl, bc
 	ld [hl], $5
 	call AddPikachuStepVector
 asm_fc9ee:
-	call DoubleAddPikachuStepVectorToScreenPixelCoords
+	call AddPikachuStepVectorToScreenPixelCoords
 	call GetPikachuWalkingAnimationSpeed
 	call UpdatePikachuWalkingSprite
 	ld hl, wSpritePikachuStateData2WalkAnimationCounter - wSpritePikachuStateData1
@@ -876,14 +876,14 @@ asm_fc9ee:
 Func_fca0a:
 	ld hl, wSpritePikachuStateData2WalkAnimationCounter - wSpritePikachuStateData1
 	add hl, bc
-	ld [hl], $8
+	ld [hl], $10
 	ld hl, wSpritePikachuStateData1MovementStatus - wSpritePikachuStateData1
 	add hl, bc
 	ld [hl], $4
 	call AddPikachuStepVector
 	call AddPikachuStepVector
 asm_fca1c:
-	call DoubleAddPikachuStepVectorToScreenPixelCoords
+	call AddPikachuStepVectorToScreenPixelCoords
 	call GetPikachuWalkingAnimationSpeed
 	call UpdatePikachuWalkingSprite
 	ld hl, wSpritePikachuStateData2WalkAnimationCounter - wSpritePikachuStateData1
@@ -921,6 +921,7 @@ TryDoubleAddPikachuStepVectorToScreenPixelCoords:
 	ld a, [wd736]
 	bit 6, a
 	jr nz, AddPikachuStepVectorToScreenPixelCoords
+	jr AddPikachuStepVectorToScreenPixelCoords60FPS
 DoubleAddPikachuStepVectorToScreenPixelCoords:
 	ld hl, wSpritePikachuStateData1YStepVector - wSpritePikachuStateData1
 	add hl, bc
@@ -946,7 +947,18 @@ AddPikachuStepVectorToScreenPixelCoords:
 	ld a, [hli]
 	add a
 	add [hl]
+	ld [hl], a
+	ret
+
+AddPikachuStepVectorToScreenPixelCoords60FPS:
+	ld hl, wSpritePikachuStateData1YStepVector - wSpritePikachuStateData1
+	add hl, bc
+	ld a, [hli]
+	add [hl]
 	ld [hli], a
+	ld a, [hli]
+	add [hl]
+	ld [hl], a
 	ret
 
 ResetPikachuStepVector:
@@ -959,6 +971,9 @@ ResetPikachuStepVector:
 	ret
 
 GetPikachuWalkingAnimationSpeed:
+	ldh a, [hOverworld60FPSPhase]
+	and a
+	ret z
 	call ComparePikachuHappinessTo80
 	ld d, $2
 	jr nc, .happy

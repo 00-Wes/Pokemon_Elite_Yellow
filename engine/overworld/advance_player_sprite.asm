@@ -17,7 +17,7 @@ _AdvancePlayerSprite::
 	ld [wXCoord], a
 .afterUpdateMapCoords
 	ld a, [wWalkCounter] ; walking animation counter
-	cp $07
+	cp $0f
 	jp nz, .scrollBackgroundAndSprites
 ; if this is the first iteration of the animation
 	ld a, c
@@ -161,10 +161,8 @@ _AdvancePlayerSprite::
 	call ScheduleWestColumnRedraw
 .scrollBackgroundAndSprites
 	ld a, [wSpritePlayerStateData1YStepVector]
-	add a
 	ld b, a
 	ld a, [wSpritePlayerStateData1XStepVector]
-	add a
 	ld c, a
 ; shift all the sprites in the direction opposite of the player's motion
 ; so that the player appears to move relative to them

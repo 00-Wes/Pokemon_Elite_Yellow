@@ -43,7 +43,9 @@ EnterMap::
 OverworldLoop::
 	call DelayFrame
 OverworldLoopLessDelay::
-	call DelayFrame
+	ldh a, [hOverworld60FPSPhase]
+	xor $1
+	ldh [hOverworld60FPSPhase], a
 	call IsSurfingPikachuInParty
 	call LoadGBPal
 	call HandleMidJump
@@ -236,7 +238,7 @@ OverworldLoopLessDelay::
 	jp c, OverworldLoop
 
 .noCollision
-	ld a, $08
+	ld a, $10
 	ld [wWalkCounter], a
 	callfar Func_fcc08
 	jr .moveAhead2
@@ -277,12 +279,12 @@ OverworldLoopLessDelay::
 	jr z, .notRunning ; If you aren't holding B, skip ahead to step normally.
 	callfar ExtraHeldBSpeed
 .notRunning ; Normal code resumes here
-	ld a, [wNoSprintSteps] ; Load the value from wNoSpriteSteps into register a
-	cp 0                  ; Compare the value in a with 0
-	jr z, .skipDecrement  ; Jump to skipDecrement if zero flag is set (i.e., a == 0)
-	dec a                 ; Decrement a
-	.skipDecrement:
-	ld [wNoSprintSteps], a ; Store the value back in wNoSpriteSteps
+	ld hl, wNoSprintSteps
+	ld a, [hl]
+	and a
+	jr z, .skipDecrement
+	dec [hl]
+.skipDecrement
 	call AdvancePlayerSprite
 	ld a, [wWalkCounter]
 	and a

@@ -75,6 +75,9 @@ UpdatePlayerSprite:
 	ld a, [hCurrentSpriteOffset]
 	add $7
 	ld l, a
+	ldh a, [hOverworld60FPSPhase]
+	and a
+	jr z, .calcImageIndex
 	ld a, [hl]
 	inc a
 	ld [hl], a
@@ -314,6 +317,9 @@ TryWalking:
 
 ; update the walking animation parameters for a sprite that is currently walking
 UpdateSpriteInWalkingAnimation:
+	ldh a, [hOverworld60FPSPhase]
+	and a
+	ret z
 	call Func_5274
 	ldh a, [hCurrentSpriteOffset]
 	add $3
@@ -371,7 +377,6 @@ UpdateSpriteInWalkingAnimation:
 	ld c, [hl]                       ; x#SPRITESTATEDATA1_XSTEPVECTOR
 	ld [hl], a                       ; [x#SPRITESTATEDATA1_XSTEPVECTOR] = 0
 	ret
-
 ; update [x#SPRITESTATEDATA2_MOVEMENTDELAY] for sprites in the delayed state (x#SPRITESTATEDATA1_MOVEMENTSTATUS)
 UpdateSpriteMovementDelay:
 	ld h, HIGH(wSpriteStateData2)
@@ -386,6 +391,9 @@ UpdateSpriteMovementDelay:
 	ld [hl], $0
 	jr .moving
 .tickMoveCounter
+	ldh a, [hOverworld60FPSPhase]
+	and a
+	ret z
 	dec [hl]                ; x#SPRITESTATEDATA2_MOVEMENTDELAY
 	jr nz, notYetMoving
 .moving
@@ -550,7 +558,7 @@ CheckSpriteAvailability:
 	ld c, a
 	ld a, [wWalkCounter]
 	and a
-	jr nz, .done           ; if player is currently walking, we're done
+	jr nz, UpdateSpriteImage
 	call UpdateSpriteImage
 	inc h
 	ldh a, [hCurrentSpriteOffset]
@@ -786,28 +794,28 @@ DoScriptedNPCMovement:
 	jr nz, .checkIfMovingDown
 	call GetSpriteScreenYPointer
 	ld c, SPRITE_FACING_UP
-	ld a, -2
+	ld a, -1
 	jr .move
 .checkIfMovingDown
 	cp NPC_MOVEMENT_DOWN
 	jr nz, .checkIfMovingLeft
 	call GetSpriteScreenYPointer
 	ld c, SPRITE_FACING_DOWN
-	ld a, 2
+	ld a, 1
 	jr .move
 .checkIfMovingLeft
 	cp NPC_MOVEMENT_LEFT
 	jr nz, .checkIfMovingRight
 	call GetSpriteScreenXPointer
 	ld c, SPRITE_FACING_LEFT
-	ld a, -2
+	ld a, -1
 	jr .move
 .checkIfMovingRight
 	cp NPC_MOVEMENT_RIGHT
 	jr nz, .noMatch
 	call GetSpriteScreenXPointer
 	ld c, SPRITE_FACING_RIGHT
-	ld a, 2
+	ld a, 1
 	jr .move
 .noMatch
 	cp $ff
@@ -826,7 +834,7 @@ DoScriptedNPCMovement:
 	ld hl, wScriptedNPCWalkCounter
 	dec [hl]
 	ret nz
-	ld a, 8
+	ld a, 16
 	ld [wScriptedNPCWalkCounter], a
 	ld hl, wNPCMovementDirections2Index
 	inc [hl]
@@ -835,7 +843,7 @@ DoScriptedNPCMovement:
 InitScriptedNPCMovement:
 	xor a
 	ld [wNPCMovementDirections2Index], a
-	ld a, 8
+	ld a, 16
 	ld [wScriptedNPCWalkCounter], a
 	jp AnimScriptedNPCMovement
 
@@ -896,7 +904,11 @@ AnimScriptedNPCMovement:
 	ret
 
 AdvanceScriptedNPCAnimFrameCounter:
+	ldh a, [hOverworld60FPSPhase]
+	and a
+	jr z, .skipAnimationAdvance
 	call Func_5274
+.skipAnimationAdvance
 	ld h, HIGH(wSpriteStateData1)
 	ldh a, [hCurrentSpriteOffset]
 	add $8
@@ -1071,6 +1083,9 @@ Func_5349:
 	ret
 
 Func_5357:
+	ldh a, [hOverworld60FPSPhase]
+	and a
+	ret z
 	call Func_5274
 	ldh a, [hCurrentSpriteOffset]
 	add $3
