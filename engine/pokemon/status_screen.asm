@@ -96,6 +96,10 @@ StatusScreen:
 	call ClearScreen
 	call UpdateSprites
 	call LoadHpBarAndStatusTilePatterns
+	ld de, TextBoxGraphics
+	ld hl, vChars2 tile $60
+	lb bc, BANK(TextBoxGraphics), 1
+	call CopyVideoData
 	ld de, BattleHudTiles1  ; source
 	ld hl, vChars2 + $6d0 ; dest
 	lb bc, BANK(BattleHudTiles1), $03
@@ -343,6 +347,12 @@ StatsText:
 	next "SPEED@"
 
 StatusScreen2:
+	xor a
+	jr StatusScreen2Start
+StatusScreen2Hidden:
+	ld a, 1
+StatusScreen2Start:
+	push af
 	ldh a, [hTileAnimations]
 	push af
 	xor a
@@ -456,8 +466,8 @@ StatusScreen2:
 	hlcoord 12, 4
 	lb bc, 3, 7
 	call PrintNumber ; exp
-	call CalcExpToLevelUp
-	ld de, wLoadedMonExp
+	callfar CalcExpToLevelUp
+	ld de, wBuffer
 	hlcoord 7, 6
 	lb bc, 3, 7
 	call PrintNumber ; exp needed to level up
@@ -470,36 +480,14 @@ StatusScreen2:
 	call GetMonName
 	hlcoord 9, 1
 	call PlaceString
+	pop af
+	ldh [hTileAnimations], a
+	pop af
+	and a
+	ret nz
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	call Delay3
-	pop af
-	ret
-	
-CalcExpToLevelUp:
-	ld a, [wLoadedMonLevel]
-	cp MAX_LEVEL
-	jr z, .atMaxLevel
-	inc a
-	ld d, a
-	callfar CalcExperience
-	ld hl, wLoadedMonExp + 2
-	ldh a, [hExperience + 2]
-	sub [hl]
-	ld [hld], a
-	ldh a, [hExperience + 1]
-	sbc [hl]
-	ld [hld], a
-	ldh a, [hExperience]
-	sbc [hl]
-	ld [hld], a
-	ret
-.atMaxLevel
-	ld hl, wLoadedMonExp
-	xor a
-	ld [hli], a
-	ld [hli], a
-	ld [hl], a
 	ret
 
 StatusScreenExpText:
@@ -536,8 +524,23 @@ StatusScreenOriginal:
 	jr c, .waitPage1
 .showPage2
 	call StatusScreen2
-	ld b, A_BUTTON | B_BUTTON
+.waitPage2
+	ld b, A_BUTTON | B_BUTTON | SELECT | START
 	call PokedexStatusWaitForButtonPressLoop
+	bit BIT_SELECT, a
+	jr nz, .reorderMoves
+	bit BIT_START, a
+	jr z, ExitStatusScreen
+	callfar ShowMoveDetails
+	ld a, e
+	and A_BUTTON | B_BUTTON
+	jr nz, ExitStatusScreen
+	call StatusScreen2
+	jr .waitPage2
+.reorderMoves
+	callfar StatusMoveOrderMenu
+	call StatusScreen2
+	jr .waitPage2
 ExitStatusScreen:
 	xor a
 	ld [wStatusScreenViewMode], a
@@ -571,11 +574,30 @@ StatusScreenLoop:
 	jr c, .waitPage1
 .showPage2
 	call StatusScreen2
+.waitPage2
 	call PokemonStatusWaitForButtonPress
 	bit BIT_D_UP, a
 	jr nz, .prevMon
 	bit BIT_D_DOWN, a
 	jr nz, .nextMon
+	bit BIT_SELECT, a
+	jr nz, .reorderMoves
+	bit BIT_START, a
+	jr z, .exitStatus
+	callfar ShowMoveDetails ; returns the dismiss button in e, not a
+	bit BIT_D_UP, e
+	jr nz, .prevMon
+	bit BIT_D_DOWN, e
+	jr nz, .nextMon
+	ld a, e
+	and A_BUTTON | B_BUTTON
+	jr nz, .exitStatus
+	call StatusScreen2
+	jr .waitPage2
+.reorderMoves
+	callfar StatusMoveOrderMenu
+	call StatusScreen2
+	jr .waitPage2
 .exitStatus
 	jp ExitStatusScreen
 .nextMon

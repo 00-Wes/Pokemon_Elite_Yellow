@@ -275,11 +275,7 @@ BillsPCDeposit:
 	ld a, [wPartyCount]
 	dec a
 	jp z, BillsPCMenu ; if 1 pokemon left in party, exit the menu automatically
-	ld hl, wd730
-	set BIT_NO_TEXT_DELAY, [hl] ; turn off letter printing delay so we get instant text
-	ld hl, WhatText
-	call PrintText
-	; in case we displayed the status menu, need to reload these
+	call ClearDepositWithdrawMenuRemnant
 	call RedrawCurrentBoxPrompt
 	jp BillsPCDeposit
 
@@ -315,10 +311,10 @@ BillsPCWithdraw:
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
 	CheckEvent FLAG_VIEW_PC_PKMN
-	jr nz, .viewPkmn
+	jp nz, .viewPkmn
 	call BillsPCBackupListIndex
 	call DisplayDepositWithdrawMenu
-	jr nc, .doneWithdrawDialogBox
+	jp nc, .doneWithdrawDialogBox
 	ld a, [wWhichPokemon]
 	ld hl, wBoxMonNicks
 	call GetPartyMonName
@@ -349,8 +345,8 @@ BillsPCWithdraw:
 	ld a, [wPartyCount]
 	cp PARTY_LENGTH
 	jp z, BillsPCMenu ; if party is full (can't withdraw more), exit the menu automatically
-	ld hl, WhatText
-	call .redrawTextBoxAndCurrentBox
+	call ClearDepositWithdrawMenuRemnant
+	call RedrawCurrentBoxPrompt
 	jp BillsPCWithdraw ; otherwise go back to the menu
 .redrawTextBoxAndCurrentBox
 	push hl
@@ -383,6 +379,10 @@ BillsPCRelease:
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
 	call BillsPCBackupListIndex
+	call DisplayDepositWithdrawMenu
+	jp nc, .doneReleaseDialogBox
+	call ClearDepositWithdrawMenuRemnant
+	call RedrawCurrentBoxPrompt
 	callfar IsThisPartymonStarterPikachu_Box
 	jr c, .asm_216cb
 	ld hl, wd730
@@ -407,6 +407,8 @@ BillsPCRelease:
 	ld a, [wBoxCount]
 	and a
 	jp z, BillsPCMenu ; if no pokemon left to release, exit the menu automatically
+	call ClearDepositWithdrawMenuRemnant
+	call RedrawCurrentBoxPrompt
 	jp .loop ; otherwise go back to the menu
 
 .asm_216cb
@@ -487,10 +489,13 @@ DisplayDepositWithdrawMenu:
 	lb bc, 6, 9
 	call TextBoxBorder
 	ld a, [wParentMenuItem]
-	and a ; was the Deposit or Withdraw item selected in the parent menu?
-	ld de, DepositPCText
-	jr nz, .next
+	and a
 	ld de, WithdrawPCText
+	jr z, .next
+	cp 1
+	ld de, DepositPCText
+	jr z, .next
+	ld de, ReleasePCText
 .next
 	hlcoord 11, 12
 	call PlaceString
@@ -534,9 +539,9 @@ DisplayDepositWithdrawMenu:
 .viewStats
 	call SaveScreenTilesToBuffer1
 	ld a, [wParentMenuItem]
-	and a
+	cp 1
 	ld a, PLAYER_PARTY_DATA
-	jr nz, .next2
+	jr z, .next2
 	ld a, BOX_DATA
 .next2
 	ld [wMonDataLocation], a
@@ -551,6 +556,7 @@ DisplayDepositWithdrawMenu:
 
 DepositPCText:  db "DEPOSIT@"
 WithdrawPCText: db "WITHDRAW@"
+ReleasePCText:  db "RELEASE@"
 StatsCancelPCText:
 	db   "STATS"
 	next "CANCEL@"
@@ -674,3 +680,64 @@ RedrawCurrentBoxPrompt:
 	callfar LoadBillsPCExtraTiles ; in the case of displaying pokemon status menu, this needs to be reloaded
 	decoord 13, 13
 	jpfar DrawCurrentBoxPrompt ; redraw current box prompt since it probably changed
+
+; clears the popup box's remnants and any leftover deposit/withdraw message text
+ClearDepositWithdrawMenuRemnant:
+	; row12 col0 is the main PC box's own left border column, cols1-3 are its
+	; interior (its bottom border is row13, not row12) - printing a message
+	; wrongly draws a border there via MESSAGE_BOX's full-width redraw, so
+	; restore col0's vertical bar and the visible "SE" of "SEE YA!" (cols2-3)
+	hlcoord 0, 12
+	ld [hl], "│"
+	inc hl
+	ld [hl], " "
+	inc hl
+	ld [hl], "S"
+	inc hl
+	ld [hl], "E"
+	inc hl
+	; cols4-19 is genuinely the list box's own bottom border
+	ld [hl], "└"
+	inc hl
+	ld b, 14
+.borderRow
+	ld [hl], "─"
+	inc hl
+	dec b
+	jr nz, .borderRow
+	ld [hl], "┘"
+	; restore the main PC menu box's own bottom border row (cols0-13); printing
+	; the deposit/withdraw message blanks this whole row via MESSAGE_BOX's own
+	; redraw, not just the part the popup overlapped. col13 gets fixed by
+	; RedrawCurrentBoxPrompt
+	hlcoord 0, 13
+	ld [hl], "└"
+	inc hl
+	ld b, 12
+.mainBoxBorderRow
+	ld [hl], "─"
+	inc hl
+	dec b
+	jr nz, .mainBoxBorderRow
+	ld [hl], "┘"
+	; blank the whole message-box text area (cols1-18, rows14-16) so any leftover
+	; "was stored"/"is taken out" text (and the popup's own remnant) is cleared
+	hlcoord 1, 14
+	ld b, 3
+.row
+	push hl
+	ld c, 18
+.col
+	ld [hl], " "
+	inc hl
+	dec c
+	jr nz, .col
+	pop hl
+	ld de, SCREEN_WIDTH
+	add hl, de
+	dec b
+	jr nz, .row
+	; fix the popup's bottom-left corner tile left sitting on the message box's border
+	hlcoord 9, 17
+	ld [hl], "─"
+	ret
