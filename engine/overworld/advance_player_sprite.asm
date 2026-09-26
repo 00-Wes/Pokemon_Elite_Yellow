@@ -182,12 +182,13 @@ _AdvancePlayerSprite::
 	dec e
 	jr nz, .spriteShiftLoop
 .done
-	ldh a, [hSCY]
+; deferred so the BG scroll lands on the same frame as the shifted sprites' OAM
+	ldh a, [hPendingSCY]
 	add b
-	ldh [hSCY], a ; update background scroll Y
-	ldh a, [hSCX]
+	ldh [hPendingSCY], a
+	ldh a, [hPendingSCX]
 	add c
-	ldh [hSCX], a ; update background scroll X
+	ldh [hPendingSCX], a
 	ret
 
 ; the following four functions are used to move the pointer to the upper left

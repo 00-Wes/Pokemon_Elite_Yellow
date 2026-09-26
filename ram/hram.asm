@@ -389,7 +389,9 @@ hLCDCPointer:: db
 
 hJoyInput:: db
 
-	ds 2
+; overworld scroll deltas, applied in V-blank right after wShadowOAM is rebuilt
+hPendingSCY:: db
+hPendingSCX:: db
 
 hDisableJoypadPolling:: db
 

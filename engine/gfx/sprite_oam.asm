@@ -1,4 +1,21 @@
 PrepareOAMData::
+	call .prepare
+	ldh a, [hPendingSCY]
+	ld b, a
+	ldh a, [hSCY]
+	add b
+	ldh [hSCY], a
+	ldh a, [hPendingSCX]
+	ld b, a
+	ldh a, [hSCX]
+	add b
+	ldh [hSCX], a
+	xor a
+	ldh [hPendingSCY], a
+	ldh [hPendingSCX], a
+	ret
+
+.prepare
 ; Determine OAM data for currently visible
 ; sprites and write it to wShadowOAM.
 ; Yellow code has been changed to use registers more efficiently
