@@ -115,6 +115,8 @@ SpriteSheetPointerTable:
 	overworld_sprite FlyingPikachuSprite, 12    ; SPRITE_FLYING_PIKACHU
 	overworld_sprite PokeBallItemSprite, 12     ; SPRITE_ITEM_BALL
 	overworld_sprite OmanyteSprite, 12           ; SPRITE_OMANYTE
+	overworld_sprite BlackbeltSprite, 12        ; SPRITE_BLACKBELT
+	overworld_sprite SwimmerFSprite, 12         ; SPRITE_SWIMMER_F
 	overworld_sprite PokeBallSprite, 4          ; SPRITE_POKE_BALL
 	overworld_sprite HelixFossilSprite, 4       ; SPRITE_HELIX_FOSSIL
 	overworld_sprite BoulderSprite, 4           ; SPRITE_BOULDER

@@ -74,7 +74,6 @@ FairySprite::            INCBIN "gfx/sprites/fairy.2bpp"
 AgathaSprite::           INCBIN "gfx/sprites/agatha.2bpp"
 BrunoSprite::            INCBIN "gfx/sprites/bruno.2bpp"
 LoreleiSprite::          INCBIN "gfx/sprites/lorelei.2bpp"
-SeelSprite::             INCBIN "gfx/sprites/seel.2bpp"
 
 
 SECTION "NPC Sprites 3", ROMX
@@ -146,6 +145,9 @@ JolteonSprite::          INCBIN "gfx/sprites/jolteon.2bpp"
 FlyingPikachuSprite::    INCBIN "gfx/sprites/flyingpikachu.2bpp"
 PokeBallItemSprite::     INCBIN "gfx/sprites/poke_ball_item.2bpp"
 OmanyteSprite::          INCBIN "gfx/sprites/omanyte.2bpp"
+SeelSprite::             INCBIN "gfx/sprites/seel.2bpp"
+SwimmerFSprite::	 INCBIN "gfx/sprites/swimmer_f.2bpp"
+BlackbeltSprite::	 INCBIN "gfx/sprites/blackbelt.2bpp"
 
 
 SECTION "Mon Icons 1", ROMX

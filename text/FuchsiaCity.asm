@@ -115,5 +115,6 @@ _FuchsiaCityFossilSignKabutoText::
 	prompt
 
 _FuchsiaCityFossilSignUndeterminedText::
-	text "Expo Coming Soon"
+	text "Attraction"
+	line "Coming Soon!"
 	done

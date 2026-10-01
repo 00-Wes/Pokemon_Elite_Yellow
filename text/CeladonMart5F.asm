@@ -24,5 +24,5 @@ _CeladonMart5FSailorText::
 	done
 
 _CeladonMart5FCurrentFloorSignText::
-	text "5F: POWER ZONE"
+	text "5F: SUPPLEMENTS"
 	done
