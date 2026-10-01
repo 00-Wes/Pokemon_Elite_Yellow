@@ -32,10 +32,10 @@ VBlank::
 	call VBlankCopyDouble
 	call UpdateMovingBgTiles
 	call hDMARoutine
-	ld a, BANK(PrepareOAMData)
-	ldh [hLoadedROMBank], a
-	ld [MBC1RomBank], a
-	call PrepareOAMData
+;	ld a, BANK(PrepareOAMData)
+;	ldh [hLoadedROMBank], a
+;	ld [MBC1RomBank], a
+;	call PrepareOAMData
 
 	; VBlank-sensitive operations end.
 	call TrackPlayTime ; keep track of time played
@@ -43,13 +43,9 @@ VBlank::
 	call Random
 	call ReadJoypad
 
-	ldh a, [hVBlankOccurred]
-	and a
-	jr z, .skipZeroing
 	xor a
 	ldh [hVBlankOccurred], a
 
-.skipZeroing
 	ldh a, [hFrameCounter]
 	and a
 	jr z, .skipDec
@@ -85,6 +81,14 @@ VBlank::
 DelayFrame::
 ; Wait for the next vblank interrupt.
 ; As a bonus, this saves battery.
+
+	push bc
+	push de
+	push hl
+	farcall PrepareOAMData
+	pop hl
+	pop de
+	pop bc
 
 DEF NOT_VBLANKED EQU 1
 
