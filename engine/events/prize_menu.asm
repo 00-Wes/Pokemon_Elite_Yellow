@@ -77,8 +77,11 @@ GetPrizeMenuId:
 	ld e, a
 	inc hl
 	push hl
-	ld hl, wPrize1
-	call CopyString
+	ld h, d
+	ld l, e
+	ld de, wPrize1
+	ld bc, 3
+	call CopyData
 	pop hl
 	ld a, [hli]
 	ld h, [hl]
