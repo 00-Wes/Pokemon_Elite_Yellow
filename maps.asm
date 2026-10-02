@@ -137,6 +137,7 @@ INCLUDE "data/maps/objects/PewterNidoranHouse.asm"
 
 INCLUDE "data/maps/headers/PewterSpeechHouse.asm"
 INCLUDE "scripts/PewterSpeechHouse.asm"
+INCLUDE "scripts/move_relearner.asm"
 INCLUDE "data/maps/objects/PewterSpeechHouse.asm"
 
 INCLUDE "data/maps/headers/CeruleanTrashedHouse.asm"
@@ -1192,7 +1193,6 @@ CinnabarLabFossilRoom_Blocks: INCBIN "maps/CinnabarLabFossilRoom.blk"
 
 ; Mateo's move relearner/deleter files
 INCLUDE "scripts/move_deleter.asm"
-INCLUDE "scripts/move_relearner.asm"
 
 INCLUDE "data/maps/headers/CinnabarPokecenter.asm"
 INCLUDE "scripts/CinnabarPokecenter.asm"

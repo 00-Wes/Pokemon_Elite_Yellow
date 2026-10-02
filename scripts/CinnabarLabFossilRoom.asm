@@ -6,7 +6,11 @@ CinnabarLabFossilRoom_TextPointers:
 	dw_const CinnabarLabFossilRoomScientist1Text, TEXT_CINNABARLABFOSSILROOM_SCIENTIST1
 	dw_const CinnabarLabFossilRoomScientist2Text, TEXT_CINNABARLABFOSSILROOM_SCIENTIST2
 	dw_const MoveDeleterText1, TEXT_CINNABARLABFOSSILROOM_MOVE_DELETER
-	dw_const MoveRelearnerText1, TEXT_CINNABARLABFOSSILROOM_MOVE_RELEARNER
+	dw_const CinnabarLabFossilRoomScientist3Text, TEXT_CINNABARLABFOSSILROOM_MOVE_RELEARNER
+
+CinnabarLabFossilRoomScientist3Text:
+	text_far _CinnabarLabFossilRoomScientist3Text
+	text_end
 
 Lab4Script_GetFossilsInBag:
 ; construct a list of all fossils in the player's bag

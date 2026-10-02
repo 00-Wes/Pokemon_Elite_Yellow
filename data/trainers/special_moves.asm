@@ -10,7 +10,7 @@ SpecialTrainerMoves:
 
 	db BROCK, 1
 	db 2, 1, BIDE
-	db 2, 3, BIND
+	db 2, 4, BIND
 	db 0
 
 	db BROCK, 2

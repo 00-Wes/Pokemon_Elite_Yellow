@@ -76,3 +76,7 @@ _CinnabarLabFossilRoomScientist1ComeAgainText::
 	text "Aiyah! You come"
 	line "again!"
 	done
+
+_CinnabarLabFossilRoomScientist3Text::
+	text "Hello"
+	done
