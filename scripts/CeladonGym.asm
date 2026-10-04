@@ -141,12 +141,6 @@ CeladonGymErikaText:
 	ld hl, .ReceivedRainbowBadgeText
 	ld de, .ReceivedRainbowBadgeText
 	call SaveEndBattleTextPointers
-	farcall GetBadgesObtained
-	ld a, [wNumSetBits]
-	cp 5
-	jr nc, .Erika6thGym
-	cp 4
-	jr nc, .Erika5thGym
 	jr .Erika4thGym
 .todone
 	jr .done
@@ -172,26 +166,6 @@ CeladonGymErikaText:
 	ld hl, .PreBattleRematchRefusedText
 	call PrintText
 	jr .done
-.Erika6thGym
-	call Delay3
-	ld a, OPP_ERIKA
-	ld [wCurOpponent], a
-	ld a, 3
-	ld [wTrainerNo], a
-	ld a, $4 ; new script
-	ld [wCeladonGymCurScript], a
-	ld [wCurMapScript], a
-	jr .afterBatttle
-.Erika5thGym
-	call Delay3
-	ld a, OPP_ERIKA
-	ld [wCurOpponent], a
-	ld a, 2
-	ld [wTrainerNo], a
-	ld a, $4 ; new script
-	ld [wCeladonGymCurScript], a
-	ld [wCurMapScript], a
-	jr .afterBatttle
 .Erika4thGym
 	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a

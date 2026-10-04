@@ -749,7 +749,7 @@ GravelerEvosMoves:
 	db 0
 ; Learnset
 	db 6, DEFENSE_CURL
-	db 12, ROCK_THROW
+	db 13, ROCK_THROW
 	db 21, DIG
 	db 26, HARDEN
 	db 31, SELFDESTRUCT
@@ -891,7 +891,7 @@ GolemEvosMoves:
 	db 0
 ; Learnset
 	db 6, DEFENSE_CURL
-	db 12, ROCK_THROW
+	db 13, ROCK_THROW
 	db 21, DIG
 	db 26, HARDEN
 	db 31, SELFDESTRUCT
@@ -2319,7 +2319,7 @@ GeodudeEvosMoves:
 	db 0
 	; Learnset
 	db 6, DEFENSE_CURL
-	db 12, ROCK_THROW
+	db 13, ROCK_THROW
 	db 21, DIG
 	db 26, HARDEN
 	db 31, SELFDESTRUCT

@@ -466,7 +466,7 @@ StatusScreen2Start:
 	hlcoord 12, 4
 	lb bc, 3, 7
 	call PrintNumber ; exp
-	callfar CalcExpToLevelUp
+	callfar DrawStatusScreenEXPBar
 	ld de, wBuffer
 	hlcoord 7, 6
 	lb bc, 3, 7

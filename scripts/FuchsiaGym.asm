@@ -138,10 +138,6 @@ FuchsiaGymKogaText:
 	ld hl, .ReceivedSoulBadgeText
 	ld de, .ReceivedSoulBadgeText
 	call SaveEndBattleTextPointers
-	farcall GetBadgesObtained
-	ld a, [wNumSetBits]
-	cp 5
-	jr nc, .Koga6thGym
 	jr .Koga5thGym
 .todone
 	jr .done
@@ -167,16 +163,6 @@ FuchsiaGymKogaText:
 	ld hl, .PreBattleRematchRefusedText
 	call PrintText
 	jr .done
-.Koga6thGym
-	call Delay3
-	ld a, OPP_KOGA
-	ld [wCurOpponent], a
-	ld a, 2
-	ld [wTrainerNo], a
-	ld a, $4 ; new script
-	ld [wFuchsiaGymCurScript], a
-	ld [wCurMapScript], a
-	jr .afterBatttle
 .Koga5thGym
 	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a

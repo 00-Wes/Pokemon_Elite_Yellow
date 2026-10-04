@@ -79,28 +79,7 @@ SpecialTrainerMoves:
 	db 4, 4, SLEEP_POWDER
 	db 0
 
-	db ERIKA, 2 ; db $FF, 41, TANGELA, 42, VICTREEBEL, 42, VENUSAUR, 43, VILEPLUME, 0
-	db 1, 1, BIND
-	db 1, 2, BODY_SLAM
-    db 2, 1, SWORDS_DANCE
-	db 2, 2, WRAP
-    db 3, 1, RAZOR_LEAF
-    db 3, 2, LEECH_SEED
-    db 3, 3, SLUDGE
-    db 4, 2, SLEEP_POWDER
-    db 0 
-
-	db ERIKA, 3 ; db $FF, 48, TANGELA, 49, VICTREEBEL, 48, VENUSAUR, 49, EXEGGUTOR, 50, VILEPLUME, 0
-	db 1, 2, STUN_SPORE
-    db 1, 3, SOLARBEAM
-    db 2, 4, SWORDS_DANCE
-    db 3, 2, SOLARBEAM
-    db 3, 3, LEECH_SEED
-    db 4, 1, REFLECT
-    db 5, 1, LEECH_SEED
-    db 0
-
-	db ERIKA, 4
+	db ERIKA, 4 ; db $FF,64, TANGELA, 64, VENUSAUR, 64, PARASECT, 64, EXEGGUTOR, 65, VICTREEBEL, 65, VILEPLUME, 0
 	db 1, 3, STUN_SPORE
 	db 2, 2, LEECH_SEED
 	db 2, 3, SLEEP_POWDER
@@ -129,22 +108,7 @@ SpecialTrainerMoves:
 	db 4, 3, TOXIC
 	db 0
 
-	db KOGA, 2 ; 49, GOLBAT, 48, MUK, 49, TENTACRUEL, 48, WEEZING, 50, VENOMOTH, 0
-	db 1, 1, TOXIC
-	db 1, 2, CONFUSE_RAY
-	db 1, 4, BITE
-	db 2, 2, MEGA_DRAIN
-	db 2, 4, ACID_ARMOR
-	db 3, 2, SURF
-	db 3, 3, ICE_BEAM
-	db 4, 2, SLUDGE
-	db 4, 3, THUNDERBOLT
-	db 5, 1, SOLARBEAM
-	db 5, 2, DOUBLE_TEAM
-	db 5, 3, TOXIC
-	db 0
-
-	db KOGA, 3
+	db KOGA, 3 ; db $FF, 64, GOLBAT, 64, MUK, 64, TENTACRUEL, 65, WEEZING, 64, ARBOK, 65, VENOMOTH, 0
 	db 1, 1, FLY
 	db 1, 2, TOXIC
 	db 1, 3, DOUBLE_TEAM
@@ -208,16 +172,6 @@ SpecialTrainerMoves:
 	db 4, 3, PSYCHIC_M
 	db 4, 4, RECOVER 
 	db 5, 1, THUNDER_WAVE
-	db 0
-
-	db SABRINA, 2 ; db $FF, 43, ABRA,  42, MR_MIME, 43, KADABRA,  43, ALAKAZAM, 0
-	db 1, 1, PSYCHIC_M
-	db 2, 1, SUBSTITUTE
-	db 2, 2, MIMIC
-	db 2, 3, SUBSTITUTE
-	db 2, 4, PSYCHIC_M
-	db 3, 1, PSYWAVE
-	db 4, 1, THUNDER_WAVE
 	db 0
 
 	db SABRINA, 3 ; db $FF, 65, MR_MIME, 64, HYPNO, 64, SLOWBRO, 64, JYNX, 64, GENGAR, 65, ALAKAZAM, 0

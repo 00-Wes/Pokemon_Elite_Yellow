@@ -132,6 +132,107 @@ CheckToggleView:
 	scf
 	ret
 
+DrawStatusScreenEXPBar:
+	ld a, [wLoadedMonLevel]
+	cp MAX_LEVEL
+	ld b, 64
+	jp z, .draw
+	ld a, [wLoadedMonSpecies]
+	ld [wd0b5], a
+	call GetMonHeader
+	ld a, [wLoadedMonLevel]
+	ld d, a
+	callfar CalcExperience
+	ld hl, hExperience
+	ld de, wBuffer + 6
+	ld bc, 3
+	call CopyData
+	ld a, [wLoadedMonLevel]
+	inc a
+	ld d, a
+	callfar CalcExperience
+	ld hl, hExperience
+	ld de, wBuffer + 3
+	ld bc, 3
+	call CopyData
+	ld hl, wLoadedMonExp
+	ld de, wBuffer
+	ld bc, 3
+	call CopyData
+	ld hl, wBuffer + 8
+	ld de, wBuffer + 2
+	call .subtractBase
+	ld hl, wBuffer + 8
+	ld de, wBuffer + 5
+	call .subtractBase
+.normalize
+	ld hl, wBuffer + 3
+	ld a, [hli]
+	or [hl]
+	jr z, .calculate
+	ld hl, wBuffer
+	srl [hl]
+	inc hl
+	rr [hl]
+	inc hl
+	rr [hl]
+	inc hl
+	srl [hl]
+	inc hl
+	rr [hl]
+	inc hl
+	rr [hl]
+	jr .normalize
+.calculate
+	ld hl, wBuffer
+	ld de, hMultiplicand
+	ld bc, 3
+	call CopyData
+	ld a, 64
+	ldh [hMultiplier], a
+	call Multiply
+	ld a, [wBuffer + 5]
+	ldh [hDivisor], a
+	ld b, 4
+	call Divide
+	ldh a, [hQuotient + 3]
+	cp 65
+	jr c, .lengthReady
+	ld a, 64
+.lengthReady
+	ld b, a
+.draw
+	hlcoord 18, 7
+	ld d, 8
+.tile
+	ld a, b
+	cp 8
+	jr c, .partial
+	sub 8
+	ld b, a
+	ld a, $c8
+	jr .write
+.partial
+	add $c0
+	ld b, 0
+.write
+	ld [hld], a
+	dec d
+	jr nz, .tile
+	jp CalcExpToLevelUp
+.subtractBase
+	ld c, 3
+	and a
+.subtractByte
+	ld a, [de]
+	sbc [hl]
+	ld [de], a
+	dec hl
+	dec de
+	dec c
+	jr nz, .subtractByte
+	ret
+
 CalcExpToLevelUp:
 	ld a, [wLoadedMonLevel]
 	cp MAX_LEVEL
