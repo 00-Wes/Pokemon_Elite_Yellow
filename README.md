@@ -1,12 +1,4 @@
-# Pokémon Yellow Legacy
-
-The Yellow Legacy project is the prequel to [Crystal Legacy](https://github.com/cRz-Shadows/Pokemon_Crystal_Legacy) by content creator Patrick Smith ([TheSmithPlays](https://www.youtube.com/@TheSmithPlays)), and the second project in his planned Legacy series. It is based on [the Pokémon Yellow Disassembly](https://github.com/pret/pokeyellow). The Legacy project is focused on changing the base game in a way that adds quality of life additions and better balancing with the benefit of twenty years of hindsight. The primary goal of each mod is to keep the original feeling of the game while still making meaningful improvements for the player. This means that certain idiosyncrasies of the first generation of Pokémon games will remain, as they are considered an essential aspect to the core experience.
-
-Pokémon Yellow exists in a unique role in the Pokémon franchise – it was the first truly significant revision of existing Pokémon games, and it still exists as the only core Pokémon game to be influenced by the anime. Furthermore, Pokémon Yellow introduced greater use of color, more challenging boss fights, availability for all three starters, and Pikachu as your companion. As a project to improve this game, Yellow Legacy seeks to find balance between furthering the unique niche of anime-influence while still representing the first generation of Pokémon as a whole.
-
-Yellow Legacy aims to give each Pokémon a special niche. Balance changes were made with the intent to keep the first generation of Pokémon feeling similar to their original incarnations, while also guaranteeing that using your favorite Pokémon will not significantly handicap your journey through Kanto. As the intent is to maintain the feeling of the Generation 1 games, Yellow Legacy will not change core aspects of the battle system such as the sleep status, critical hit chance being based off of speed, or the overpowered functionality of trapping moves such as Wrap or Fire Spin. 
-
-While Yellow Legacy is not designed as a “Kaizo” project, Pokémon trainer fights (especially bosses) throughout the game have been made more difficult. Difficulty is used as a tool to make the game as engaging as possible to the most amount of players. It will not be difficult for the sake of being difficult, but rather, to provide you with a challenge that gives reaching the title of Champion a feeling of genuine earned satisfaction. Major trainers will have Pokémon and attacks designed to counter players attempting to easily sweep through the fight with a single super-effective Pokémon. However, players will also have more opportunities to create unique teams of stellar Pokémon to tackle each major fight. Pokémon availability has also been altered throughout the world to provide appropriately-powerful Pokémon based on your progression through the game. Finally, all 151 Pokémon will be obtainable in a single playthrough, and a small amount of post-game content has been added as well.
+# Pokémon Elite Yellow
 
 
 ## Download and Play
@@ -25,18 +17,14 @@ These videos also provide an overview of the hack and the ideology behind it:
 - Prerelease: https://www.youtube.com/playlist?list=PLyv5bsGgaxonXuHoUUsv3mM7xzTwENccO
 
 
-## Our Other Projects
-* Pokemon Crystal Legacy: https://github.com/cRz-Shadows/Pokemon_Crystal_Legacy
-* Pokemon Cursed Yellow: https://github.com/cRz-Shadows/Pokemon_Cursed_Yellow
-* Pokemon Battle Simulator: https://github.com/cRz-Shadows/Pokemon_Trainer_Tournament_Simulator
+## Other Future Projects
+* Pokemon Elite Purple:
+* Elite Pokemon Stadium:
+* Pokemon Elite Emerald:
 
 
 ## Discussion and Community
-* YouTube: https://www.youtube.com/@smithplayspokemon
-* Discord: https://discord.gg/Wupx8tHRVS
-* Reddit: https://www.reddit.com/r/PokemonLegacy
-* Twitter: https://twitter.com/TheSmithPlays
-* Instagram: https://www.instagram.com/thesmithplays/
+* I haven't created a Discord server yet, but I might.
 
 
 ## Pret Stuff
@@ -47,7 +35,7 @@ These videos also provide an overview of the hack and the ideology behind it:
 - **IRC:** [libera#pret][irc]
 
 
-## Credits For Yellow Legacy:
+## Credits For Yellow Legacy(which is the base Rom for this game):
 
 ### Creators:
 - TheSmithPlays - Developer
