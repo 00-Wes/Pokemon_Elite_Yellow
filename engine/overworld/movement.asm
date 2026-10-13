@@ -317,9 +317,8 @@ TryWalking:
 
 ; update the walking animation parameters for a sprite that is currently walking
 UpdateSpriteInWalkingAnimation:
-	ldh a, [hOverworld60FPSPhase]
-	and a
-	ret z
+; (no 60 FPS frame gate here: NPC slots are now updated on alternating frames
+; by _UpdateSprites, which provides the 30 Hz cadence)
 	call Func_5274
 	ldh a, [hCurrentSpriteOffset]
 	add $3
@@ -391,9 +390,6 @@ UpdateSpriteMovementDelay:
 	ld [hl], $0
 	jr .moving
 .tickMoveCounter
-	ldh a, [hOverworld60FPSPhase]
-	and a
-	ret z
 	dec [hl]                ; x#SPRITESTATEDATA2_MOVEMENTDELAY
 	jr nz, notYetMoving
 .moving
@@ -794,28 +790,28 @@ DoScriptedNPCMovement:
 	jr nz, .checkIfMovingDown
 	call GetSpriteScreenYPointer
 	ld c, SPRITE_FACING_UP
-	ld a, -1
+	ld a, -2 ; vanilla step: scripted NPCs are updated at 30 Hz again
 	jr .move
 .checkIfMovingDown
 	cp NPC_MOVEMENT_DOWN
 	jr nz, .checkIfMovingLeft
 	call GetSpriteScreenYPointer
 	ld c, SPRITE_FACING_DOWN
-	ld a, 1
+	ld a, 2
 	jr .move
 .checkIfMovingLeft
 	cp NPC_MOVEMENT_LEFT
 	jr nz, .checkIfMovingRight
 	call GetSpriteScreenXPointer
 	ld c, SPRITE_FACING_LEFT
-	ld a, -1
+	ld a, -2
 	jr .move
 .checkIfMovingRight
 	cp NPC_MOVEMENT_RIGHT
 	jr nz, .noMatch
 	call GetSpriteScreenXPointer
 	ld c, SPRITE_FACING_RIGHT
-	ld a, 1
+	ld a, 2
 	jr .move
 .noMatch
 	cp $ff
@@ -834,7 +830,7 @@ DoScriptedNPCMovement:
 	ld hl, wScriptedNPCWalkCounter
 	dec [hl]
 	ret nz
-	ld a, 16
+	ld a, 8 ; vanilla count, paired with the 2px scripted step above
 	ld [wScriptedNPCWalkCounter], a
 	ld hl, wNPCMovementDirections2Index
 	inc [hl]
@@ -843,7 +839,7 @@ DoScriptedNPCMovement:
 InitScriptedNPCMovement:
 	xor a
 	ld [wNPCMovementDirections2Index], a
-	ld a, 16
+	ld a, 8 ; vanilla count, paired with the 2px scripted step
 	ld [wScriptedNPCWalkCounter], a
 	jp AnimScriptedNPCMovement
 
@@ -904,11 +900,7 @@ AnimScriptedNPCMovement:
 	ret
 
 AdvanceScriptedNPCAnimFrameCounter:
-	ldh a, [hOverworld60FPSPhase]
-	and a
-	jr z, .skipAnimationAdvance
 	call Func_5274
-.skipAnimationAdvance
 	ld h, HIGH(wSpriteStateData1)
 	ldh a, [hCurrentSpriteOffset]
 	add $8
@@ -1083,9 +1075,6 @@ Func_5349:
 	ret
 
 Func_5357:
-	ldh a, [hOverworld60FPSPhase]
-	and a
-	ret z
 	call Func_5274
 	ldh a, [hCurrentSpriteOffset]
 	add $3

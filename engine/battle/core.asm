@@ -825,6 +825,9 @@ FaintEnemyPokemon:
 	ld [wEnemyDisabledMove], a
 	ld [wEnemyDisabledMoveNumber], a
 	ld [wEnemyMonMinimized], a
+; clear wDamage so the player's Counter can't strike back stale damage from last turn
+	ld [wDamage], a
+	ld [wDamage + 1], a
 	ld hl, wPlayerUsedMove
 	ld [hli], a
 	ld [hl], a
@@ -1430,6 +1433,9 @@ EnemySendOutFirstMon:
 	ld [wEnemyDisabledMove], a
 	ld [wEnemyDisabledMoveNumber], a
 	ld [wEnemyMonMinimized], a
+; clear wDamage so the player's Counter can't strike back stale damage from last turn
+	ld [wDamage], a
+	ld [wDamage + 1], a
 	ld hl, wPlayerUsedMove
 	ld [hli], a
 	ld [hl], a
@@ -2653,6 +2659,10 @@ PartyMenuOrRockOrRun:
 ; fall through to SwitchPlayerMon
 
 SwitchPlayerMon:
+; clear wDamage so the opponent's Counter can't strike back stale damage from last turn
+	xor a
+	ld [wDamage], a
+	ld [wDamage + 1], a
 	callfar RetreatMon
 	ld c, 50
 	call DelayFrames
@@ -3690,6 +3700,10 @@ CheckPlayerStatusConditions:
 	bit NEEDS_TO_RECHARGE, [hl]
 	jr z, .AnyMoveDisabledCheck
 	res NEEDS_TO_RECHARGE, [hl] ; reset player's recharge status
+; clear wDamage so the opponent's Counter can't strike back stale damage from last turn
+	xor a
+	ld [wDamage], a
+	ld [wDamage + 1], a
 	ld hl, MustRechargeText
 	call PrintText
 	ld hl, ExecutePlayerMoveDone ; player can't move this turn
@@ -3761,6 +3775,10 @@ CheckPlayerStatusConditions:
 	call PrintText
 
 .MonHurtItselfOrFullyParalysed
+; clear wDamage so the opponent's Counter can't strike back stale damage from last turn
+	xor a
+	ld [wDamage], a
+	ld [wDamage + 1], a
 	ld hl, wPlayerBattleStatus1
 	ld a, [hl]
 	; clear bide, thrashing, charging up, trapping moves such as wrap (already cleared for confusion damage), and invulnerable moves
@@ -4290,6 +4308,10 @@ CheckForDisobedience:
 	ld hl, WontObeyText
 	call PrintText
 	call HandleSelfConfusionDamage
+; clear wDamage so the opponent's Counter can't strike back the self-inflicted damage
+	xor a
+	ld [wDamage], a
+	ld [wDamage + 1], a
 	jp .cannotUseMove
 .monNaps
 	call BattleRandom
@@ -4959,6 +4981,8 @@ HandleCounterMove:
 .next
 	cp COUNTER
 	ret nz ; return if not using Counter
+	xor a
+	ld [wCriticalHitOrOHKO], a ; Counter just doubles damage taken, so it can never be a critical hit
 	ld a, $01
 	ld [wMoveMissed], a ; initialize the move missed variable to true (it is set to false below if the move hits)
 	ld a, [hl]
@@ -4967,14 +4991,15 @@ HandleCounterMove:
 	ld a, [de]
 	and a
 	ret z ; miss if the opponent's last selected move's Base Power is 0.
-; check if the move the target last selected was Normal or Fighting type
+; check if the move the target last selected was a counterable type
+; (Normal, Fighting, Flying, Poison, Ground, Rock, Bird, Bug, or Dragon)
 	inc de
 	ld a, [de]
-	and a ; normal type
+	cp BUG + 1 ; Normal through Bug are contiguous type IDs
+	jr c, .counterableType
+	cp DRAGON
 	jr z, .counterableType
-	cp FIGHTING
-	jr z, .counterableType
-; if the move wasn't Normal or Fighting type, miss
+; if the move wasn't a counterable type, miss
 	xor a
 	ret
 .counterableType
@@ -6166,6 +6191,10 @@ CheckEnemyStatusConditions:
 	bit NEEDS_TO_RECHARGE, [hl] ; check if enemy mon has to recharge after using a move
 	jr z, .checkIfAnyMoveDisabled
 	res NEEDS_TO_RECHARGE, [hl]
+; clear wDamage so the opponent's Counter can't strike back stale damage from last turn
+	xor a
+	ld [wDamage], a
+	ld [wDamage + 1], a
 	ld hl, MustRechargeText
 	call PrintText
 	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
@@ -6271,6 +6300,10 @@ CheckEnemyStatusConditions:
 	ld hl, FullyParalyzedText
 	call PrintText
 .monHurtItselfOrFullyParalysed
+; clear wDamage so the opponent's Counter can't strike back stale damage from last turn
+	xor a
+	ld [wDamage], a
+	ld [wDamage + 1], a
 	ld hl, wEnemyBattleStatus1
 	ld a, [hl]
 	; clear bide, thrashing, charging up, trapping moves such as wrap (already cleared for confusion damage), and invulnerable moves

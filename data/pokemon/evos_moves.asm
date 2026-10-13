@@ -402,12 +402,12 @@ GengarEvosMoves:
 ; Learnset
 	db 10, GLARE
 	db 15, POISON_GAS
-        db 24, PSYWAVE
+    db 24, PSYWAVE
 	db 29, SMOG
-	db 36, NIGHT_SHADE
-        db 44, SLUDGE
-	db 55, HYPNOSIS
-	db 55, DREAM_EATER
+	db 33, NIGHT_SHADE
+    db 38, SLUDGE
+	db 45, HYPNOSIS
+	db 49, DREAM_EATER
 	db 0
 
 NidoranFEvosMoves:
@@ -560,12 +560,12 @@ GastlyEvosMoves:
 ; Learnset
 	db 10, GLARE
 	db 15, POISON_GAS
-        db 24, PSYWAVE
-	db 29, SMOG
-	db 36, NIGHT_SHADE
-        db 44, SLUDGE
-	db 55, HYPNOSIS
-	db 55, DREAM_EATER
+    db 24, PSYWAVE
+	db 26, SMOG
+	db 29, NIGHT_SHADE
+    db 32, SLUDGE
+	db 40, HYPNOSIS
+	db 43, DREAM_EATER
 	db 0
 
 ScytherEvosMoves:
@@ -621,7 +621,7 @@ PinsirEvosMoves:
 ; Learnset
 	db 5, HARDEN
 	db 8, FOCUS_ENERGY
-        db 12, RAGE
+    db 12, RAGE
 	db 25, SEISMIC_TOSS
 	db 30, VICEGRIP
 	db 36, SUBMISSION
@@ -884,6 +884,7 @@ DrowzeeEvosMoves:
 	db 37, MEDITATE
 	db 40, HYPNOSIS
 	db 45, DREAM_EATER
+	db 50, NIGHT_SHADE
 	db 0
 
 GolemEvosMoves:
@@ -1073,12 +1074,12 @@ VenonatEvosMoves:
 	db 13, LEECH_LIFE
 	db 17, CONFUSION
 	db 20, POISONPOWDER
-        db 25, ACID
+    db 25, ACID
 	db 29, STUN_SPORE
 	db 33, PSYBEAM
 	db 36, SLEEP_POWDER
 	db 41, PSYCHIC_M
-        db 46, SLUDGE
+    db 46, SLUDGE
 	db 0
 
 DragoniteEvosMoves:
@@ -1145,7 +1146,7 @@ JynxEvosMoves:
 	db 0
 ; Learnset
 	db 12, CONFUSION
-        db 18, GLARE
+    db 18, GLARE
 	db 23, DOUBLESLAP
 	db 31, ICE_PUNCH
 	db 35, LOVELY_KISS
@@ -1484,7 +1485,7 @@ JigglypuffEvosMoves:
 	db 16, DOUBLESLAP
 	db 24, REST
 	db 30, BODY_SLAM
-	db 38, LOVELY_KISS,
+	db 38, LOVELY_KISS
 	db 43, DOUBLE_EDGE
 	db 0
 
@@ -1498,7 +1499,7 @@ WigglytuffEvosMoves:
 	db 16, DOUBLESLAP
 	db 24, REST
 	db 30, BODY_SLAM
-	db 38, LOVELY_KISS,
+	db 38, LOVELY_KISS
 	db 43, DOUBLE_EDGE
 	db 0
 
@@ -1855,6 +1856,7 @@ HypnoEvosMoves:
 	db 37, MEDITATE
 	db 40, HYPNOSIS
 	db 45, DREAM_EATER
+	db 50, NIGHT_SHADE
 	db 0
 
 GolbatEvosMoves:
@@ -2049,12 +2051,12 @@ HaunterEvosMoves:
 ; Learnset
 	db 10, GLARE
 	db 15, POISON_GAS
-        db 24, PSYWAVE
+    db 24, PSYWAVE
 	db 29, SMOG
-	db 36, NIGHT_SHADE
-        db 44, SLUDGE
-	db 55, HYPNOSIS
-	db 55, DREAM_EATER
+	db 33, NIGHT_SHADE
+    db 38, SLUDGE
+	db 45, HYPNOSIS
+	db 49, DREAM_EATER
 	db 0
 
 AbraEvosMoves:
@@ -2398,9 +2400,9 @@ CharmanderEvosMoves:
 	db 17, RAGE
 	db 19, FIRE_PUNCH
 	db 23, BITE
-	db 33, SLASH
-	db 38, FLAMETHROWER
-	db 46, FIRE_SPIN
+	db 29, SLASH
+	db 34, FLAMETHROWER
+	db 41, FIRE_SPIN
 	db 50, SLAM
 	db 0
 
@@ -2431,10 +2433,10 @@ CharmeleonEvosMoves:
 	db 17, RAGE
 	db 19, FIRE_PUNCH
 	db 23, BITE
-	db 33, SLASH
-	db 40, FLAMETHROWER
-	db 48, SLAM
-	db 56, FIRE_SPIN
+	db 29, SLASH
+	db 34, FLAMETHROWER
+	db 44, FIRE_SPIN
+	db 49, SLAM
 	db 0
 
 WartortleEvosMoves:
@@ -2463,11 +2465,11 @@ CharizardEvosMoves:
 	db 17, RAGE
 	db 19, FIRE_PUNCH
 	db 23, BITE
-	db 33, SLASH
-	db 36, WING_ATTACK
-	db 42, FLAMETHROWER
-	db 48, SLAM
-	db 56, FIRE_SPIN
+	db 29, SLASH
+	db 34, FLAMETHROWER
+	db 37, WING_ATTACK
+	db 45, FIRE_SPIN
+	db 50, SLAM
 	db 0
 
 MissingNoB5EvosMoves:

@@ -117,7 +117,6 @@ DebugItemsList:
 	db RARE_CANDY, 99
 	db HP_UP, 99
 	db MAX_REPEL, 99
-	db POKE_DOLL, 1
 	db SECRET_KEY, 1
 	db CARD_KEY, 1
 	db FULL_HEAL, 99
@@ -126,6 +125,7 @@ DebugItemsList:
 	db S_S_TICKET, 1
 	db LIFT_KEY, 1
 	db PP_UP, 99
+	db POKE_DOLL, 1
 	db -1 ; end
 
 ELSE

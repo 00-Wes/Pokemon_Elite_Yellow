@@ -936,11 +936,8 @@ ItemUseMedicine:
 	jp z, Func_e4bf
 	ld a, [wWhichPokemon]
 	ld [wQuantityBagSlot], a
-	ld a, [wWhichPokemon]
-	push af
 	ld a, [wcf91]
 	ld [wQuantityItemID], a
-	push af
 	ld a, USE_ITEM_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
 	ld a, $ff
@@ -1009,8 +1006,8 @@ ItemUseMedicine:
 	ld a, [wd11e]
 	ld e, a
 	ld [wd11e], a
-	pop af
-	push af
+	ld a, [wQuantityItemID]
+	ld [wcf91], a
 	cp CALCIUM + 1
 	jr nc, .noHappinessBoost
 	push hl
@@ -1019,9 +1016,6 @@ ItemUseMedicine:
 	pop de
 	pop hl
 .noHappinessBoost
-	pop af
-	ld [wcf91], a
-	pop af
 	ld a, [wUsedItemOnWhichPokemon]
 	ld [wWhichPokemon], a
 	ld a, [wPseudoItemID]
@@ -1391,6 +1385,8 @@ ItemUseMedicine:
 	and a ; using Softboiled?
 	jr nz, .skipRemovingItem ; no item to remove if using Softboiled
 	push hl
+	ld a, [wQuantityBagSlot]
+	ld [wWhichPokemon], a
 	call RemoveUsedItem
 	pop hl
 .skipRemovingItem
@@ -1441,8 +1437,6 @@ ItemUseMedicine:
 .canceledItemUse
 	xor a
 	ld [wActionResultOrTookBattleTurn], a ; item use failed
-	pop af
-	pop af
 .done
 	ld a, [wPseudoItemID]
 	and a ; using Softboiled?
