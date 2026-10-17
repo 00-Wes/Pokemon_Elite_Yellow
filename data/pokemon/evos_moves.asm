@@ -402,10 +402,10 @@ GengarEvosMoves:
 ; Learnset
 	db 10, GLARE
 	db 15, POISON_GAS
-    db 24, PSYWAVE
+	db 24, PSYWAVE
 	db 29, SMOG
 	db 33, NIGHT_SHADE
-    db 38, SLUDGE
+	db 38, SLUDGE
 	db 45, HYPNOSIS
 	db 49, DREAM_EATER
 	db 0
@@ -560,10 +560,10 @@ GastlyEvosMoves:
 ; Learnset
 	db 10, GLARE
 	db 15, POISON_GAS
-    db 24, PSYWAVE
+	db 24, PSYWAVE
 	db 26, SMOG
 	db 29, NIGHT_SHADE
-    db 32, SLUDGE
+	db 32, SLUDGE
 	db 40, HYPNOSIS
 	db 43, DREAM_EATER
 	db 0
@@ -621,11 +621,11 @@ PinsirEvosMoves:
 ; Learnset
 	db 5, HARDEN
 	db 8, FOCUS_ENERGY
-    db 12, RAGE
+	db 12, RAGE
 	db 25, SEISMIC_TOSS
 	db 30, VICEGRIP
-	db 36, SUBMISSION
-	db 42, SLASH
+	db 36, SLASH
+	db 42, SUBMISSION
 	db 45, GUILLOTINE
 	db 48, BIND
 	db 54, SWORDS_DANCE
@@ -2051,10 +2051,10 @@ HaunterEvosMoves:
 ; Learnset
 	db 10, GLARE
 	db 15, POISON_GAS
-    db 24, PSYWAVE
+	db 24, PSYWAVE
 	db 29, SMOG
 	db 33, NIGHT_SHADE
-    db 38, SLUDGE
+	db 38, SLUDGE
 	db 45, HYPNOSIS
 	db 49, DREAM_EATER
 	db 0
@@ -2468,8 +2468,9 @@ CharizardEvosMoves:
 	db 29, SLASH
 	db 34, FLAMETHROWER
 	db 37, WING_ATTACK
-	db 45, FIRE_SPIN
-	db 50, SLAM
+	db 45, SLAM
+	db 51, FIRE_SPIN
+	db 55, SKY_ATTACK
 	db 0
 
 MissingNoB5EvosMoves:

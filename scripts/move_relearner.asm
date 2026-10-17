@@ -8,10 +8,10 @@ MoveRelearnerText1:
 	and a
 	jp nz, .exit
 	xor a
-	;charge 1000 money
+	;charge 500 money
 	ld [hMoney], a	
 	ld [hMoney + 2], a	
-	ld a, $0A
+	ld a, $05
 	ld [hMoney + 1], a  
 	call HasEnoughMoney
 	jr nc, .enoughMoney
@@ -87,11 +87,11 @@ MoveRelearnerText1:
 	ld a, b
 	and a
 	jr z, .exit
-	; Charge 1000 money
+	; Charge 500 money
 	xor a
 	ld [wPriceTemp], a
 	ld [wPriceTemp + 2], a	
-	ld a, $0A
+	ld a, $05
 	ld [wPriceTemp + 1], a	
 	ld hl, wPriceTemp + 2
 	ld de, wPlayerMoney + 2

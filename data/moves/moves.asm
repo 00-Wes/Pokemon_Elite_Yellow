@@ -23,7 +23,7 @@ Moves:
 	move SCRATCH,      NO_ADDITIONAL_EFFECT,        40, NORMAL,       100, 35
 	move VICEGRIP,     NO_ADDITIONAL_EFFECT,        80, BUG,          100, 20
 	move GUILLOTINE,   OHKO_EFFECT,                  1, NORMAL,        30,  5
-	move RAZOR_WIND,   NO_ADDITIONAL_EFFECT,        45, FLYING,        95, 10
+	move RAZOR_WIND,   NO_ADDITIONAL_EFFECT,        45, FLYING,       100, 10
 	move SWORDS_DANCE, ATTACK_UP2_EFFECT,            0, BIRD,         100, 30
 	move CUT,          NO_ADDITIONAL_EFFECT,        45, BUG,          100, 30
 	move GUST,         NO_ADDITIONAL_EFFECT,        40, FLYING,       100, 35
@@ -51,7 +51,7 @@ Moves:
 	move DOUBLE_EDGE,  RECOIL_EFFECT,              120, NORMAL,       100, 15
 	move TAIL_WHIP,    DEFENSE_DOWN1_EFFECT,         0, BIRD,         100, 30
 	move POISON_STING, POISON_SIDE_EFFECT1,         35, POISON,       100, 35
-	move TWINEEDLE,    TWINEEDLE_EFFECT,            35, BUG,          100, 20
+	move TWINEEDLE,    TWINEEDLE_EFFECT,            45, BUG,          100, 20
 	move PIN_MISSILE,  TWO_TO_FIVE_ATTACKS_EFFECT,  20, BUG,          100, 30
 	move LEER,         DEFENSE_DOWN1_EFFECT,         0, BIRD,         100, 30
 	move BITE,         FLINCH_SIDE_EFFECT1,         60, NORMAL,       100, 25

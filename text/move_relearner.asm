@@ -3,7 +3,7 @@ _MoveRelearnerGreetingText::
 	line "to remember moves"
 	cont "they forgot."
 
-	para "¥1000 per lesson."
+	para "¥500 per lesson."
 	line "How about it?"
 	done
 
