@@ -108,7 +108,6 @@ SpriteSheetPointerTable:
 	overworld_sprite FearowSprite, 12     	    ; SPRITE_FEAROW
 	overworld_sprite Seel2Sprite, 12     	    ; SPRITE_SEEL2
 	overworld_sprite KangaskhanSprite, 12       ; SPRITE_KANGASKHAN
-	overworld_sprite SlowpokeSprite, 12         ; SPRITE_SLOWPOKE
 	overworld_sprite DoduoSprite, 12    	    ; SPRITE_DODUO
 	; --- the following are the STILL sprites, they don't move ---
 	overworld_sprite VaporeonSprite, 4    	    ; SPRITE_VAPOREON
@@ -118,6 +117,7 @@ SpriteSheetPointerTable:
 	overworld_sprite BlackbeltSprite, 12        ; SPRITE_BLACKBELT
 	overworld_sprite SwimmerFSprite, 12         ; SPRITE_SWIMMER_F
 	overworld_sprite PokeBallSprite, 4          ; SPRITE_POKE_BALL
+	overworld_sprite SlowpokeSprite, 4         ; SPRITE_SLOWPOKE
 	overworld_sprite HelixFossilSprite, 4       ; SPRITE_HELIX_FOSSIL
 	overworld_sprite BoulderSprite, 4           ; SPRITE_BOULDER
 	overworld_sprite PaperSprite, 4             ; SPRITE_PAPER

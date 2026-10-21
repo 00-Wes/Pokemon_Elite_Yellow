@@ -103,7 +103,6 @@
 	const SPRITE_FEAROW
 	const SPRITE_SEEL2
 	const SPRITE_KANGASKHAN
-	const SPRITE_SLOWPOKE
 	const SPRITE_DODUO
 	const SPRITE_VAPOREON
 	const SPRITE_FLYING_PIKACHU          ; new
@@ -112,18 +111,19 @@
 	const SPRITE_BLACKBELT
 	const SPRITE_SWIMMER_F
 DEF FIRST_STILL_SPRITE EQU const_value
-	const SPRITE_POKE_BALL               ; $47
-	const SPRITE_HELIX_FOSSIL            ; $48
-	const SPRITE_BOULDER                 ; $49
-	const SPRITE_PAPER                   ; $4a
-	const SPRITE_POKEDEX                 ; $4b
-	const SPRITE_CLIPBOARD               ; $4c
-	const SPRITE_SNORLAX                 ; $4d
-	const SPRITE_UNUSED_OLD_AMBER        ; $4e
-	const SPRITE_OLD_AMBER               ; $4f
-	const SPRITE_UNUSED_GAMBLER_ASLEEP_1 ; $50
-	const SPRITE_UNUSED_GAMBLER_ASLEEP_2 ; $51
-	const SPRITE_GAMBLER_ASLEEP          ; $52
+	const SPRITE_POKE_BALL               ; $6d
+	const SPRITE_SLOWPOKE                ; $6e
+	const SPRITE_HELIX_FOSSIL            ; $6f
+	const SPRITE_BOULDER                 ; $70
+	const SPRITE_PAPER                   ; $71
+	const SPRITE_POKEDEX                 ; $72
+	const SPRITE_CLIPBOARD               ; $73
+	const SPRITE_SNORLAX                 ; $74
+	const SPRITE_UNUSED_OLD_AMBER        ; $75
+	const SPRITE_OLD_AMBER               ; $76
+	const SPRITE_UNUSED_GAMBLER_ASLEEP_1 ; $77
+	const SPRITE_UNUSED_GAMBLER_ASLEEP_2 ; $78
+	const SPRITE_GAMBLER_ASLEEP          ; $79
 	const SPRITE_JOLTEON
 	const SPRITE_FLAREON
 	const SPRITE_WIGGLYTUFF
