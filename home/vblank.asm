@@ -82,14 +82,6 @@ DelayFrame::
 ; Wait for the next vblank interrupt.
 ; As a bonus, this saves battery.
 
-	push bc
-	push de
-	push hl
-	farcall PrepareOAMData
-	pop hl
-	pop de
-	pop bc
-
 DEF NOT_VBLANKED EQU 1
 
 	ld a, NOT_VBLANKED
@@ -99,4 +91,12 @@ DEF NOT_VBLANKED EQU 1
 	ldh a, [hVBlankOccurred]
 	and a
 	jr nz, .halt
+
+	push bc
+	push de
+	push hl
+	farcall PrepareOAMData
+	pop hl
+	pop de
+	pop bc
 	ret
