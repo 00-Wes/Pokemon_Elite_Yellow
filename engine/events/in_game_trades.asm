@@ -113,7 +113,12 @@ InGameTrade_DoTrade:
 	ld b, FLAG_SET
 	call InGameTrade_FlagActionPredef
 .skip_flag_set
+	ld a, [wInGameTradeGiveMonSpecies]
+	cp NO_MON
+	ld hl, TradeTestResultsText
+	jr z, .printConnectText
 	ld hl, ConnectCableText
+.printConnectText
 	call PrintText
 	ld a, [wWhichPokemon]
 	push af
@@ -274,9 +279,6 @@ InGameTrade_CheckForTradeEvo:
 	ret
 
 .tradeEvo
-	ld a, [wPartyCount]
-	dec a
-	ld [wWhichPokemon], a
 	ld a, $1
 	ld [wForceEvolution], a
 	ld a, LINK_STATE_TRADING
@@ -326,6 +328,10 @@ TradeTextPointers4:
 
 ConnectCableText:
 	text_far _ConnectCableText
+	text_end
+
+TradeTestResultsText:
+	text_far _TradeTestResultsText
 	text_end
 
 TradedForText:
@@ -395,13 +401,24 @@ AfterTrade3Text:
 	text_end
 
 WannaTrade4Text:
-	text_far _WannaTrade4Text
+	text_far _InitiateTradeTestText
 	text_end
 	
 NoTrade4Text:
+	text_asm
+	ld hl, .Text
+	call PrintText
+	ld a, CINNABARLABFOSSILROOM_TRADEBACKNPC
+	ldh [hSpriteIndex], a
+	ld a, SPRITESTATEDATA2_ORIGFACINGDIRECTION
+	ldh [hSpriteDataOffset], a
+	call GetPointerWithinSpriteStateData2
+	ld [hl], SPRITE_FACING_UP
+	jp TextScriptEnd
+.Text:
 	text_far _NoTrade4Text
 	text_end
-	
+
 Thanks4Text:
 	text_far _Thanks4Text
 	text_end

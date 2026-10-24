@@ -6,11 +6,23 @@ CinnabarLabFossilRoom_TextPointers:
 	dw_const CinnabarLabFossilRoomScientist1Text, TEXT_CINNABARLABFOSSILROOM_SCIENTIST1
 	dw_const CinnabarLabFossilRoomScientist2Text, TEXT_CINNABARLABFOSSILROOM_SCIENTIST2
 	dw_const MoveDeleterText1, TEXT_CINNABARLABFOSSILROOM_MOVE_DELETER
-	dw_const CinnabarLabFossilRoomScientist3Text, TEXT_CINNABARLABFOSSILROOM_MOVE_RELEARNER
+	dw_const CinnabarLabFossilRoomTradebackNPCText, TEXT_CINNABARLABFOSSILROOM_TRADEBACKNPC
+	dw_const CinnabarLabFossilRoomTradeTestPCText, TEXT_CINNABARLABFOSSILROOM_TRADE_PC
+	dw_const CinnabarLabFossilRoomPCText, TEXT_CINNABARLABFOSSILROOM_PC
 
-CinnabarLabFossilRoomScientist3Text:
-	text_far _CinnabarLabFossilRoomScientist3Text
+CinnabarLabFossilRoomTradebackNPCText:
+	text_far _WannaTrade4Text
 	text_end
+
+CinnabarLabFossilRoomTradeTestPCText:
+	text_asm
+	ld a, TRADE_WITH_SELF
+	ld [wWhichTrade], a
+	predef DoInGameTradeDialogue
+	jp TextScriptEnd
+
+CinnabarLabFossilRoomPCText:
+	script_pokecenter_pc
 
 Lab4Script_GetFossilsInBag:
 ; construct a list of all fossils in the player's bag

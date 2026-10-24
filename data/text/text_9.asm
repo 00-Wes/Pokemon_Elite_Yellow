@@ -306,6 +306,31 @@ _ConnectCableText::
 	line "cable like so!"
 	prompt
 
+_TradeTestResultsText::
+	text "Very good.@"
+	text_promptbutton
+	text_asm
+	ld a, CINNABARLABFOSSILROOM_TRADEBACKNPC
+	ldh [hSpriteIndex], a
+	ld a, SPRITE_FACING_UP
+	ldh [hSpriteFacingDirection], a
+	ld a, $1
+	ld [wUpdateSpritesEnabled], a
+	call SetSpriteFacingDirection
+	call UpdateSprites
+	hlcoord 1, 13
+	lb bc, 4, 18
+	call ClearScreenArea
+	bccoord 1, 14
+	ld hl, .Rest
+	ret
+.Rest
+	text "Now I will monitor"
+	line "the results as"
+	cont "they print out"
+	cont "of the computer."
+	prompt
+
 _TradedForText::
 	text "<PLAYER> traded"
 	line "@"
@@ -436,25 +461,40 @@ _AfterTrade3Text::
 	done
 
 _WannaTrade4Text::
-	text "Hello, I am"
-	line "researching"
+	text "Hello! For a long"
+	line "time, I have been"
+	cont "researching"
 	cont "#MON that"
-	cont "evolve when"
-	cont "traded. If you"
-	cont "have one and"
-	cont "trade it to"
-	cont "me, I will trade"
-	cont "it right back to"
-	cont "you. I just need"
-	cont "you to have that"
-	cont "#MON in the"
-	cont "last slot of your"
-	cont "party in order"
-	cont "for it to work."
+	cont "evolve while they"
+	cont "are being traded,"
+	cont "and now I have"
+	cont "some theories"
+	cont "I would like"
+	cont "to test."
 
-	para "So are you"
-	line "interested?"
+	para "Would you be"
+	line "interested in"
+	cont "helping me test"
+	cont "them by trading"
+	cont "with me?"
+	cont "I will trade your"
+	cont "#MON right"
+	cont "back to you."
+
+	para "If you are"
+	line "interested,"
+	line "just use that"
+	cont "PC right below"
+	cont "me to initiate"
+	cont "the trade."
 	done
+
+_InitiateTradeTestText::
+	text "Would you like to"
+	line "initiate the"
+	cont "trade test?"
+	done
+
 	
 _NoTrade4Text::
 	text "Ok, maybe next"
@@ -462,11 +502,32 @@ _NoTrade4Text::
 	done
 	
 _Thanks4Text::
-	text "Excellent!"
-	line "That gave me tons"
-	cont "of data to go"
-	cont "over for my"
-	cont "research."
+	text "Excellent!@"
+	text_promptbutton
+	text_asm
+	ld a, CINNABARLABFOSSILROOM_TRADEBACKNPC
+	ldh [hSpriteIndex], a
+	ld a, SPRITE_FACING_DOWN
+	ldh [hSpriteFacingDirection], a
+	ld a, SPRITESTATEDATA2_ORIGFACINGDIRECTION
+	ldh [hSpriteDataOffset], a
+	call GetPointerWithinSpriteStateData2
+	ld [hl], SPRITE_FACING_UP
+	ld a, $1
+	ld [wUpdateSpritesEnabled], a
+	call SetSpriteFacingDirection
+	call UpdateSprites
+	hlcoord 1, 13
+	lb bc, 4, 18
+	call ClearScreenArea
+	bccoord 1, 14
+	ld hl, .Rest
+	ret
+.Rest
+	text "That test got me"
+	line "one step closer"
+	cont "to proving my"
+	cont "theories!"
 	done
 
 _NothingToCutText::

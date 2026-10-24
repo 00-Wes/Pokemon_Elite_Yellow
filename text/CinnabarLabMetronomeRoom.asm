@@ -30,6 +30,15 @@ _CinnabarLabMetronomeRoomScientist1TM35NoRoomText::
 	done
 
 _CinnabarLabMetronomeRoomScientist2Text::
+	text "We are researching"
+	line "amber here"
+	cont "because we have"
+	cont "reason to believe"
+	cont "there could be"
+	cont "DNA in it."
+	done
+
+_CinnabarLabMetronomeRoomScientist3Text::
 	text "EEVEE can evolve"
 	line "into 1 of 3 kinds"
 	cont "of #MON."

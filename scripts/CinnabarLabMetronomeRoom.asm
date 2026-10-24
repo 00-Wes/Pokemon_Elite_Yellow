@@ -5,7 +5,7 @@ CinnabarLabMetronomeRoom_TextPointers:
 	def_text_pointers
 	dw_const CinnabarLabMetronomeRoomScientist1Text,   TEXT_CINNABARLABMETRONOMEROOM_SCIENTIST1
 	dw_const CinnabarLabMetronomeRoomScientist2Text,   TEXT_CINNABARLABMETRONOMEROOM_SCIENTIST2
-	dw_const CinnabarLabMetronomeRoomTradebackNPCText, TEXT_CINNABARLABMETRONOMEROOM_TRADEBACKNPC
+	dw_const CinnabarLabMetronomeRoomScientist3Text,   TEXT_CINNABARLABMETRONOMEROOM_SCIENTIST3
 	dw_const CinnabarLabMetronomeRoomPCText,           TEXT_CINNABARLABMETRONOMEROOM_PC_KEYBOARD
 	dw_const CinnabarLabMetronomeRoomPCText,           TEXT_CINNABARLABMETRONOMEROOM_PC_MONITOR
 	dw_const CinnabarLabMetronomeRoomAmberPipeText,    TEXT_CINNABARLABMETRONOMEROOM_AMBER_PIPE
@@ -54,6 +54,10 @@ CinnabarLabMetronomeRoomScientist2Text:
 	text_far _CinnabarLabMetronomeRoomScientist2Text
 	text_end
 
+CinnabarLabMetronomeRoomScientist3Text:
+	text_far _CinnabarLabMetronomeRoomScientist3Text
+	text_end
+
 CinnabarLabMetronomeRoomPCText:
 	text_far _CinnabarLabMetronomeRoomPCText
 	text_end
@@ -61,10 +65,3 @@ CinnabarLabMetronomeRoomPCText:
 CinnabarLabMetronomeRoomAmberPipeText:
 	text_far _CinnabarLabMetronomeRoomAmberPipeText
 	text_end
-
-CinnabarLabMetronomeRoomTradebackNPCText:
-	text_asm
-	ld a, TRADE_WITH_SELF
-	ld [wWhichTrade], a
-	predef DoInGameTradeDialogue
-	jp TextScriptEnd

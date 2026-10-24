@@ -3,7 +3,7 @@ PewterSpeechHouse_Script:
 
 PewterSpeechHouse_TextPointers:
 	def_text_pointers
-	dw_const MoveRelearnerText1,              TEXT_PEWTERSPEECHHOUSE_GAMBLER
+	dw_const MoveRelearnerText1,              TEXT_PEWTERSPEECHHOUSE_MOVE_RELEARNER
 	dw_const PewterSpeechHouseYoungsterText, TEXT_PEWTERSPEECHHOUSE_YOUNGSTER
 
 PewterSpeechHouseYoungsterText:

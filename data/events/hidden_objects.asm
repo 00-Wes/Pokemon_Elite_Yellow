@@ -78,8 +78,8 @@ HiddenObjectMaps:
 	dbw FUCHSIA_GYM,                  FuchsiaGymHiddenObjects
 	dbw POKEMON_MANSION_1F,           Mansion1HiddenObjects
 	dbw CINNABAR_GYM,                 CinnabarGymHiddenObjects
-	dbw CINNABAR_LAB_FOSSIL_ROOM,     CinnabarLab4HiddenObjects
 	dbw CINNABAR_POKECENTER,          CinnabarPokecenterHiddenObjects
+	dbw CINNABAR_LAB_FOSSIL_ROOM,     CinnabarLabFossilRoomHiddenObjects
 	db -1 ; end
 
 MACRO hidden_object
@@ -549,12 +549,11 @@ CinnabarGymHiddenObjects:
 	hidden_object  1,  7, (TRUE  << 4) | 6, PrintCinnabarQuiz
 	db -1 ; end
 
-CinnabarLab4HiddenObjects:
-	hidden_object  0,  4, SPRITE_FACING_UP, OpenPokemonCenterPC
-	hidden_object  2,  4, SPRITE_FACING_UP, OpenPokemonCenterPC
-	db -1 ; end
-
 CinnabarPokecenterHiddenObjects:
 	hidden_object  0,  4, SPRITE_FACING_UP, PrintBenchGuyText
 	hidden_object 13,  3, SPRITE_FACING_UP, OpenPokemonCenterPC
+	db -1 ; end
+
+CinnabarLabFossilRoomHiddenObjects:
+	hidden_object  0,  4, SPRITE_FACING_UP, CinnabarLabFossilRoomTradeTestPCHiddenObject
 	db -1 ; end
