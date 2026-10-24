@@ -1882,6 +1882,7 @@ MewtwoEvosMoves:
 	db 70, RECOVER
 	db 75, MIST
 	db 81, AMNESIA
+	db 86, NIGHT_SHADE
 	db 0
 
 SnorlaxEvosMoves:
@@ -2511,6 +2512,7 @@ OddishEvosMoves:
 	db 30, SLEEP_POWDER
 	db 35, PETAL_DANCE
 	db 40, SLUDGE
+	db 45, RAZOR_LEAF
 	db 50, SOLARBEAM
 	db 0
 
@@ -2528,6 +2530,7 @@ GloomEvosMoves:
 	db 30, SLEEP_POWDER
 	db 35, PETAL_DANCE
 	db 40, SLUDGE
+	db 45, RAZOR_LEAF
 	db 50, SOLARBEAM
 	db 0
 
@@ -2544,6 +2547,7 @@ VileplumeEvosMoves:
 	db 30, SLEEP_POWDER
 	db 35, PETAL_DANCE
 	db 40, SLUDGE
+	db 45, RAZOR_LEAF
 	db 50, SOLARBEAM
 	db 0
 

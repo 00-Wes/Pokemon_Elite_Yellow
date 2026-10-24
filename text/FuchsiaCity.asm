@@ -87,8 +87,9 @@ _FuchsiaCityKangaskhanSignText::
 _FuchsiaCitySlowpokeSignText::
 	text "Name: SLOWPOKE"
 
-	para "Friendly and very"
-	line "slow moving."
+	para "A friendly #MON"
+	line "that loves to"
+	cont "fish."
 	prompt
 
 _FuchsiaCityLaprasSignText::

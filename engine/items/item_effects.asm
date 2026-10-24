@@ -1697,15 +1697,7 @@ ItemUseMedicine:
 	call GetPartyMonName
 	ld a, RARE_CANDY_MSG
 	ld [wPartyMenuTypeOrMessageID], a
-	ld a, [wMaxItemQuantity]
-	push af
 	call RedrawPartyMenu
-	pop af
-	ld [wMaxItemQuantity], a
-	ld c, a
-	ld a, [wUsedItemOnWhichPokemon]
-	ld b, a
-	call .learnMovesFromRareCandyBatch
 	pop de
 	ld a, d
 	ld [wWhichPokemon], a
@@ -1722,6 +1714,11 @@ ItemUseMedicine:
 	ld d, $01
 	callfar PrintStatsBox ; display new stats text box
 	call WaitForTextScrollButtonPress ; wait for button press
+	ld a, [wMaxItemQuantity]
+	ld c, a
+	ld a, [wUsedItemOnWhichPokemon]
+	ld b, a
+	call .learnMovesFromRareCandyBatch
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 
