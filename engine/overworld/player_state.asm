@@ -322,19 +322,25 @@ ReadTileFromVram:
 	ld b, a
 	ld a, [wTempColCoords + 1]
 	ld c, a
-	;get the x offset in vram
-	ld a, [rSCX]
-	call .div8
+	;the view's top-left BG address is kept in wMapViewVRAMPointer
+	ld a, [wMapViewVRAMPointer]
+	and $1f
 	add b
-	cp $20
-	call nc, .sub20
+	and $1f
 	ld b, a
-	;get the y offset in vram
-	ld a, [rSCY]
-	call .div8
+	ld a, [wMapViewVRAMPointer + 1]
+	and $03
+	swap a
+	srl a
 	add c
-	cp $20
-	call nc, .sub20
+	ld c, a
+	ld a, [wMapViewVRAMPointer]
+	and $e0
+	rlca
+	rlca
+	rlca
+	add c
+	and $1f
 	ld c, a
 	;set vram starting address
 	push hl
@@ -359,14 +365,6 @@ ReadTileFromVram:
 	jr z, .wait
 	pop hl
 	pop bc
-	ret
-.div8
-	srl a
-	srl a
-	srl a
-	ret
-.sub20
-	sub $20
 	ret
 
 GetTileTwoStepsInFrontOfPlayer:

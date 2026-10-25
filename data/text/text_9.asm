@@ -483,7 +483,7 @@ _WannaTrade4Text::
 
 	para "If you are"
 	line "interested,"
-	line "just use that"
+	cont "just use that"
 	cont "PC right below"
 	cont "me to initiate"
 	cont "the trade."
