@@ -7,14 +7,16 @@ CheckPartyOrBoxFullForBallThrow::
 	ld a, [wIsInBattle]
 	and a
 	jr nz, .inBattle
-	pop hl ; this call never returns; discard the return address
-	farjp ItemUseNotTime
+	ld hl, ItemUseNotTime
+	ld b, BANK(ItemUseNotTime)
+	jr .cannotThrow
 
 .inBattle
 	dec a
 	jr z, .canThrow ; wild battle
-	pop hl ; this call never returns; discard the return address
-	farjp ThrowBallAtTrainerMon
+	ld hl, ThrowBallAtTrainerMon
+	ld b, BANK(ThrowBallAtTrainerMon)
+	jr .cannotThrow
 
 .canThrow
 	xor a
@@ -42,5 +44,14 @@ CheckPartyOrBoxFullForBallThrow::
 	ret
 
 .boxFull
-	pop hl ; this call never returns; discard the return address
-	farjp BoxFullCannotThrowBall
+	ld hl, BoxFullCannotThrowBall
+	ld b, BANK(BoxFullCannotThrowBall)
+
+; discards the callfar's Bankswitch frame and ItemUseBall's continuation, then
+; farjps so the handler returns straight to ItemUseBall's caller; the bank switch
+; must happen from home bank code, since this bank's code would be unmapped mid-routine
+.cannotThrow
+	pop de
+	pop de
+	pop de
+	jp Bankswitch
