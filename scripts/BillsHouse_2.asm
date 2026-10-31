@@ -1,4 +1,13 @@
 BillsHousePrintBillPokemonText::
+	CheckEvent EVENT_USED_CELL_SEPARATOR_ON_BILL
+	jr z, .notSeparated
+	ld hl, .PippiiText
+	call PrintText
+	ld a, CLEFAIRY
+	call PlayCry
+	call WaitForSoundToFinish
+	ret
+.notSeparated
 	ld hl, .ImNotAPokemonText
 	call PrintText
 	call YesNoChoice
@@ -15,6 +24,10 @@ BillsHousePrintBillPokemonText::
 	ld hl, .NoYouGottaHelpText
 	call PrintText
 	jr .use_machine
+
+.PippiiText:
+	text_far _PokemonFanClubClefairyText
+	text_end
 
 .ImNotAPokemonText:
 	text_far _BillsHouseBillImNotAPokemonText
@@ -89,6 +102,12 @@ Func_f24ae::
 	jr z, .asm_f24d2
 	ld a, [wBillsHouseCurScript]
 	cp SCRIPT_BILLSHOUSE_SCRIPT5
+	ldpikaemotion e, PikachuEmotion27
+	ret z
+	cp SCRIPT_BILLSHOUSE_SCRIPT10
+	ldpikaemotion e, PikachuEmotion27
+	ret z
+	cp SCRIPT_BILLSHOUSE_SCRIPT13
 	ldpikaemotion e, PikachuEmotion27
 	ret z
 	cp SCRIPT_BILLSHOUSE_SCRIPT0

@@ -18,12 +18,21 @@ BillsHouse_ScriptPointers:
 	dw_const BillsHouseScript7, SCRIPT_BILLSHOUSE_SCRIPT7
 	dw_const BillsHouseScript8, SCRIPT_BILLSHOUSE_SCRIPT8
 	dw_const BillsHouseScript9, SCRIPT_BILLSHOUSE_SCRIPT9
+	dw_const BillsHouseScript10, SCRIPT_BILLSHOUSE_SCRIPT10
+	dw_const BillsHouseScript12, SCRIPT_BILLSHOUSE_SCRIPT12
+	dw_const BillsHouseScript13, SCRIPT_BILLSHOUSE_SCRIPT13
 
 BillsHouseScript_1e09e:
 	ld hl, wd492
 	bit 7, [hl]
 	set 7, [hl]
 	ret nz
+	CheckEventHL EVENT_MET_BILL_2
+	jr nz, .metBill
+	ld a, HS_BILLS_HOUSE_CLEFAIRY2
+	ld [wMissableObjectIndex], a
+	predef HideObject
+.metBill
 	CheckEventHL EVENT_MET_BILL_2
 	jr z, .asm_1e0af
 	jr .asm_1e0b3
@@ -156,13 +165,34 @@ BillsHouseScript5:
 	ld a, HS_BILL_1
 	ld [wMissableObjectIndex], a
 	predef ShowObject
+	ld a, BILLSHOUSE_BILL1
+	ldh [hSpriteIndex], a
 	ld c, 8
-	call DelayFrames
+.holdDown
+	ld a, SPRITE_FACING_DOWN
+	ldh [hSpriteFacingDirection], a
+	call SetSpriteFacingDirection
+	call DelayFrame
+	dec c
+	jr nz, .holdDown
+	ld a, SCRIPT_BILLSHOUSE_SCRIPT10
+	ld [wBillsHouseCurScript], a
+	ret
+
+BillsHouseScript10:
+	ld a, BILLSHOUSE_BILL1
+	ldh [hSpriteIndex], a
+	ld a, SPRITE_FACING_DOWN
+	ldh [hSpriteFacingDirection], a
+	call SetSpriteFacingDirection
+	ld a, [wd730]
+	bit 0, a
+	ret nz
 	ld hl, wd472
 	bit 7, [hl]
-	jr z, .asm_1e1c6
+	jr z, .noPikachu
 	call CheckPikachuFollowingPlayer
-	jr z, .asm_1e1c6
+	jr z, .noPikachu
 	ld a, BILLSHOUSE_BILL1
 	ldh [hSpriteIndex], a
 	ld a, SPRITE_FACING_DOWN
@@ -176,7 +206,77 @@ BillsHouseScript5:
 	ld [wWhichEmotionBubble], a
 	predef EmotionBubble
 	callfar InitializePikachuTextID
-.asm_1e1c6
+	ld hl, PikachuMovementData_BillsHouseRunLeft
+	call ApplyPikachuMovementData
+.noPikachu
+	ld a, SCRIPT_BILLSHOUSE_SCRIPT12
+	ld [wBillsHouseCurScript], a
+	ret
+
+BillsHouseScript12:
+	ld hl, wd472
+	bit 7, [hl]
+	jr z, .showClefairy
+	call CheckPikachuFollowingPlayer
+	jr z, .showClefairy
+	callfar InitializePikachuTextID
+.showClefairy
+	ld a, $c
+	ldh [hSpriteScreenYCoord], a
+	ld a, $90
+	ldh [hSpriteScreenXCoord], a
+	ld a, 6
+	ldh [hSpriteMapYCoord], a
+	ld a, 10
+	ldh [hSpriteMapXCoord], a
+	ld a, BILLSHOUSE_BILL_POKEMON
+	ld [wSpriteIndex], a
+	call SetSpritePosition1
+	ld a, HS_BILL_POKEMON
+	ld [wMissableObjectIndex], a
+	predef ShowObject
+	ld a, BILLSHOUSE_BILL_POKEMON
+	ldh [hSpriteIndex], a
+	ld de, MovementData_BillsHouseClefairyWalkOut
+	call MoveSprite
+	ld a, SCRIPT_BILLSHOUSE_SCRIPT13
+	ld [wBillsHouseCurScript], a
+	ret
+
+MovementData_BillsHouseClefairyWalkOut:
+	db NPC_MOVEMENT_DOWN
+	db -1 ; end
+
+BillsHouseScript13:
+	ld a, BILLSHOUSE_BILL1
+	ldh [hSpriteIndex], a
+	ld a, SPRITE_FACING_DOWN
+	ldh [hSpriteFacingDirection], a
+	call SetSpriteFacingDirection
+	ld a, [wd730]
+	bit 0, a
+	ret nz
+	ld hl, wd472
+	bit 7, [hl]
+	jr z, .billWalk
+	call CheckPikachuFollowingPlayer
+	jr z, .billWalk
+	ld hl, PikachuMovementData_BillsHouseLookRight
+	call ApplyPikachuMovementData
+	ld a, $f
+	ld [wEmotionBubbleSpriteIndex], a
+	ld a, EXCLAMATION_BUBBLE
+	ld [wWhichEmotionBubble], a
+	predef EmotionBubble
+	callfar InitializePikachuTextID
+	ld hl, PikachuMovementData_BillsHouseRunRight
+	call ApplyPikachuMovementData
+	ld a, $f
+	ld [wEmotionBubbleSpriteIndex], a
+	ld a, QUESTION_BUBBLE
+	ld [wWhichEmotionBubble], a
+	predef EmotionBubble
+.billWalk
 	ld a, BILLSHOUSE_BILL1
 	ldh [hSpriteIndex], a
 	ld de, MovementData_1e807
@@ -198,12 +298,52 @@ PikachuMovementData_1e1a9:
 	db $37
 	db $3f
 
+PikachuMovementData_BillsHouseRunLeft:
+	db $00
+	db $1f
+	db $1f
+	db $1f
+	db $1f
+	db $1f
+	db $36
+	db $3f
+
+PikachuMovementData_BillsHouseLookRight:
+	db $00
+	db $38
+	db $3f
+
+PikachuMovementData_BillsHouseRunRight:
+	db $00
+	db $20
+	db $20
+	db $20
+	db $20
+	db $3f
+
 BillsHouseScript6:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
 	SetEvent EVENT_MET_BILL_2 ; this event seems redundant
 	SetEvent EVENT_MET_BILL
+	ld a, HS_BILL_POKEMON
+	ld [wMissableObjectIndex], a
+	predef HideObject
+	ld a, BILLSHOUSE_CLEFAIRY2
+	ld [wSpriteIndex], a
+	ld a, $1c
+	ldh [hSpriteScreenYCoord], a
+	ld a, $90
+	ldh [hSpriteScreenXCoord], a
+	ld a, 7
+	ldh [hSpriteMapYCoord], a
+	ld a, 10
+	ldh [hSpriteMapXCoord], a
+	call SetSpritePosition1
+	ld a, HS_BILLS_HOUSE_CLEFAIRY2
+	ld [wMissableObjectIndex], a
+	predef ShowObject
 	ld a, SCRIPT_BILLSHOUSE_SCRIPT7
 	ld [wBillsHouseCurScript], a
 	ret

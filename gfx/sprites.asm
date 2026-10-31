@@ -84,7 +84,6 @@ SandshrewSprite::        INCBIN "gfx/sprites/sandshrew.2bpp"
 OddishSprite::           INCBIN "gfx/sprites/oddish.2bpp"
 BulbasaurSprite::        INCBIN "gfx/sprites/bulbasaur.2bpp"
 JigglypuffSprite::       INCBIN "gfx/sprites/jigglypuff.2bpp"
-ClefairySprite::         INCBIN "gfx/sprites/clefairy.2bpp"
 ChanseySprite::          INCBIN "gfx/sprites/chansey.2bpp"
 SurfingPikachuSprite::   INCBIN "gfx/sprites/surfing_pikachu.2bpp"
 JessieSprite::           INCBIN "gfx/sprites/jessie.2bpp"
@@ -148,6 +147,7 @@ OmanyteSprite::          INCBIN "gfx/sprites/omanyte.2bpp"
 SeelSprite::             INCBIN "gfx/sprites/seel.2bpp"
 SwimmerFSprite::	 INCBIN "gfx/sprites/swimmer_f.2bpp"
 BlackbeltSprite::	 INCBIN "gfx/sprites/blackbelt.2bpp"
+ClefairySprite::         INCBIN "gfx/sprites/clefairy.2bpp"
 
 
 SECTION "Mon Icons 1", ROMX
