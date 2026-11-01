@@ -40,6 +40,7 @@ Museum1F_TextPointers:
 	dw_const Museum1FScientist2Text, TEXT_MUSEUM1F_SCIENTIST2
 	dw_const Museum1FScientist3Text, TEXT_MUSEUM1F_SCIENTIST3
 	dw_const Museum1FOldAmberText,   TEXT_MUSEUM1F_OLD_AMBER
+	dw_const Museum1FResurrectionScientistText, TEXT_MUSEUM1F_RESURRECTIONSCIENTIST
 
 Museum1FScientist1Text:
 	text_asm
@@ -64,4 +65,9 @@ Museum1FScientist3Text:
 Museum1FOldAmberText:
 	text_asm
 	farcall Museum1FPrintOldAmberText
+	jp TextScriptEnd
+
+Museum1FResurrectionScientistText:
+	text_asm
+	farcall MuseumScientistResurrectFossil
 	jp TextScriptEnd

@@ -106,3 +106,24 @@ _Museum1FOldAmberText::
 	text "The AMBER is"
 	line "clear and gold!"
 	done
+
+_Museum1FResurrectionScientistIntroText::
+	text "Hi, I resurrect"
+	line "Fossils. Do you"
+	cont "have any that you"
+	cont "would like me to"
+
+	para "resurrect for you?"
+	done
+
+_Museum1FResurrectionScientistNoFossilsText::
+	text "Sorry! You don't"
+	line "have any DOME or"
+	cont "HELIX FOSSILS!"
+	done
+
+_Museum1FResurrectionScientistSeesFossilText::
+	text "Excellent! I will"
+	line "resurrect it"
+	cont "for you."
+	done
